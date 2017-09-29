@@ -10,11 +10,12 @@
 下载：`git clone https://github.com/touchFishTeam/CloudStore_API.git cloudstore`
 
 ```shell
+# 安装 composer 插件
 cd cloudstore
 
-# global
+# 全局
 composer install
-# local
+# 局部
 php composer.phar install
 ```
 
@@ -35,8 +36,6 @@ php composer.phar install
 ```
 
 配置完成
-
----
 
 ## 一、入口
 
@@ -59,16 +58,14 @@ define("APP_PATH", __DIR__."/../App");
 $app = \Core\Start::getApp();
 ```
 
----
-
 ## 二、文件结构
 
 ```
 App							应用文件夹
-  |--Action						控制器
-  |--Model						模型
-  |--Route						路由
-  |--Validate					验证器// TODO
+	|--Action					控制器
+	|--Model					模型
+	|--Route					路由
+	|--Validate					验证器// TODO
 Core						核心文件夹
 	|--FluentPDO				FluentPDO 插件
 	|--Action.php				主控制器
@@ -84,8 +81,6 @@ public						公有文件夹
 vendor						composer插件
 composer.json				composer插件目录
 ```
-
----
 
 ## 三、配置文件
 
@@ -104,11 +99,9 @@ App 目录下的`Settings.php`文件为该应用的配置文件
       'pass' => '0212',				// 数据库密码
       'dbname' => 'cloudstore',		// 数据库名
       'prefix' => '',				// 表前缀，空为没有
-	]
+    ]
 ];
 ```
-
----
 
 ## 四、路由
 
@@ -117,8 +110,6 @@ App 目录下的`Settings.php`文件为该应用的配置文件
 **需要注意的是，要将路由文件名写为`*.route.php`形式**
 
 在结构上，最好路由文件与控制器、模型、验证器同名，便于管理
-
----
 
 ## 五、控制器
 
@@ -221,8 +212,6 @@ class User extends Action
     }
 }
 ```
-
-
 
 ## 六、模型
 
