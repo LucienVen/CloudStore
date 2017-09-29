@@ -25,11 +25,18 @@ class Action
     protected $_docURL;
 
     /**
+     * 请求类
+     *
+     * @var RequestInterface
+     */
+    protected $_request;
+
+    /**
      * 响应类.
      *
      * @var ResponseInterface
      */
-    private $_response;
+    protected $_response;
 
     /**
      * 路由参数
@@ -49,6 +56,7 @@ class Action
         // TODO
         $docURL = "";
         // 对操作请求进行，并返回响应
+        $this->_request = $container->get("request");
         $this->_response = $container->get("response");
         // 获取需要操作的路由参数
         $this->_args = $container->get('args');

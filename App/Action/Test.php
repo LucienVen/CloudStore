@@ -9,6 +9,11 @@ class Test extends \Core\Action
         parent::__construct($c);
     }
 
+    public function test1()
+    {
+        return $this->success("success");
+    }
+
     public function test()
     {
         $testModel = new \App\Model\Test;
