@@ -68,8 +68,8 @@ class FluentPDO
      *
      * @return \SelectQuery
      */
-    public function from($primaryKey = null) {
-        $table = $this->table;
+    public function from($table, $primaryKey = null) {
+        $table = $table ? $table : $this->table;
         $query = new SelectQuery($this, $table);
         if ($primaryKey !== null) {
             $tableTable     = $query->getFromTable();
@@ -89,8 +89,8 @@ class FluentPDO
      *
      * @return \InsertQuery
      */
-    public function insertInto($values = array()) {
-        $table = $this->table;
+    public function insertInto($table, $values = array()) {
+        $table = $table ? $table : $this->table;
         $query = new InsertQuery($this, $table, $values);
 
         return $query;
@@ -105,8 +105,8 @@ class FluentPDO
      *
      * @return \UpdateQuery
      */
-    public function update($set = array(), $primaryKey = null) {
-        $table = $this->table;
+    public function update($table, $set = array(), $primaryKey = null) {
+        $table = $table ? $table : $this->table;
         $query = new UpdateQuery($this, $table);
         $query->set($set);
         if ($primaryKey) {
@@ -125,8 +125,8 @@ class FluentPDO
      *
      * @return \DeleteQuery
      */
-    public function delete($primaryKey = null) {
-        $table = $this->table;
+    public function delete($table, $primaryKey = null) {
+        $table = $table ? $table : $this->table;
         $query = new DeleteQuery($this, $table);
         if ($primaryKey) {
             $primaryKeyName = $this->getStructure()->getPrimaryKey($table);
@@ -145,6 +145,7 @@ class FluentPDO
      * @return \DeleteQuery
      */
     public function deleteFrom($table, $primaryKey = null) {
+        $table = $table ? $table : $this->table;
         $args = func_get_args();
 
         return call_user_func_array(array($this, 'delete'), $args);
