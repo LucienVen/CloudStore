@@ -19,7 +19,7 @@ composer install
 php composer.phar install
 ```
 
-开启服务器后，访问http://your.domain.com/cloudstore/public/index.php/test
+开启服务器后，访问/public/index.php/test
 
 如果成功，显示：
 
@@ -27,7 +27,7 @@ php composer.phar install
 "success"
 ```
 
-创建 mysql 数据库名为 `cloudstore`，导入`/help/test.sql`文件，在`/App/Settings.php`中将`db`中的配置改为你的数据库配置，访问http://your.domain.com/cloudstore/public/index.php/test/yourname
+创建 mysql 数据库名为 `cloudstore`，导入`/help/test.sql`文件，在`/App/Settings.php`中将`db`中的配置改为你的数据库配置，访问/public/index.php/test/yourname
 
 如果成功，显示：
 

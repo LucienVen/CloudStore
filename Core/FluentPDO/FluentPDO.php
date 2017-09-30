@@ -68,7 +68,7 @@ class FluentPDO
      *
      * @return \SelectQuery
      */
-    public function from($table, $primaryKey = null) {
+    public function from($table = '', $primaryKey = null) {
         $table = $table ? $table : $this->table;
         $query = new SelectQuery($this, $table);
         if ($primaryKey !== null) {
@@ -89,7 +89,7 @@ class FluentPDO
      *
      * @return \InsertQuery
      */
-    public function insertInto($table, $values = array()) {
+    public function insertInto($table = '', $values = array()) {
         $table = $table ? $table : $this->table;
         $query = new InsertQuery($this, $table, $values);
 
@@ -105,7 +105,7 @@ class FluentPDO
      *
      * @return \UpdateQuery
      */
-    public function update($table, $set = array(), $primaryKey = null) {
+    public function update($table = '', $set = array(), $primaryKey = null) {
         $table = $table ? $table : $this->table;
         $query = new UpdateQuery($this, $table);
         $query->set($set);
@@ -125,7 +125,7 @@ class FluentPDO
      *
      * @return \DeleteQuery
      */
-    public function delete($table, $primaryKey = null) {
+    public function delete($table = '', $primaryKey = null) {
         $table = $table ? $table : $this->table;
         $query = new DeleteQuery($this, $table);
         if ($primaryKey) {
@@ -144,7 +144,7 @@ class FluentPDO
      *
      * @return \DeleteQuery
      */
-    public function deleteFrom($table, $primaryKey = null) {
+    public function deleteFrom($table = '', $primaryKey = null) {
         $table = $table ? $table : $this->table;
         $args = func_get_args();
 
