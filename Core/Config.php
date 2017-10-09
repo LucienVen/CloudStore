@@ -9,10 +9,12 @@ class Config
     // private static $path = __DIR__ . '/Setting.php';
 
     /**
-     * load setting file
+     * load setting file.
+     *
      * @param string $path
      */
-    public static function load($path = null){
+    public static function load($path = null)
+    {
         // load custom setting path
         if (!is_null($path)) {
             self::$path = file_exists($path) ? $path : self::$path;
@@ -21,11 +23,14 @@ class Config
     }
 
     /**
-     * get the spc-field in the setting file
+     * get the spc-field in the setting file.
+     *
      * @param string $field
+     *
      * @return array|null
      */
-    public static function get($field = null){
+    public static function get($field = null)
+    {
         // the config has not be init
         if (empty(self::$config)) {
             self::load();
@@ -38,9 +43,11 @@ class Config
                     return $first;
                 }
                 // traverse the second layer
-                foreach ($first as $skey => $second) {
-                    if ($skey == $field) {
-                        return $second;
+                if (is_array($first)) {
+                    foreach ($first as $skey => $second) {
+                        if ($skey == $field) {
+                            return $second;
+                        }
                     }
                 }
             }
@@ -50,5 +57,4 @@ class Config
         // have no spc-field
         return self::$config;
     }
-
 }

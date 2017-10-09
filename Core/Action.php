@@ -46,6 +46,15 @@ class Action
     protected $_args;
 
     /**
+     * Model 实例
+     *
+     * @var \Core\Model
+     */
+    protected $_model;
+
+    protected $_container;
+
+    /**
      * init Response and help URL.
      *
      * @param \Slim\Container $container
@@ -55,11 +64,16 @@ class Action
     {
         // TODO
         $docURL = "";
+        $this->_container = $container;
         // 对操作请求进行，并返回响应
         $this->_request = $container->get("request");
         $this->_response = $container->get("response");
         // 获取需要操作的路由参数
         $this->_args = $container->get('args');
+        // 获取模型实例
+        $reflection = new \ReflectionClass($this);
+        $modelname = "\\App\\Model\\".$reflection->getShortName();
+        $this->_model = new $modelname;
         // 初始化帮助地址
         $this->_docURL = $docURL;
     }

@@ -2,15 +2,15 @@
 
 // Middleware Configuration
 
-// $container = $app->getContainer();
+$container = $app->getContainer();
 
-// $container['newcookie'] = function ($c) {
-//     return new \Slim\Http\Cookies();
-// };
+$container['newcookie'] = function ($c) {
+    return new \Slim\Http\Cookies();
+};
 
-// $container['cookie'] = function ($c) {
-//     return new \Slim\Http\Cookies($c->get('request')->getCookieParams());
-// };
+$container['cookie'] = function ($c) {
+    return new \Slim\Http\Cookies($c->get('request')->getCookieParams());
+};
 
 // add arguments get function
 // $app->add(function ($request, $response, $next) {

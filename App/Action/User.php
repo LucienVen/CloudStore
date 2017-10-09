@@ -13,23 +13,32 @@ class User extends \Core\Action
 
     public function login()
     {
-        $data = $this->_request->getQueryParams();
+        $data = $this->_request->getParsedBody();
         try {
-            $user = new UserModel();
-            $res = $user->login($data);
-            var_dump($res);
+            $res = $this->_model->login($data);
         } catch (\Exception $e) {
+            return $this->error(
+                $e->getCode(),
+                empty($e->getMessage()) ? $this->_ERR_MSG[$e->getCode()] : $e->getMessage()
+            );
         }
+
+        $this->cookie($this->_container['newcookie'], ['token' => $this->_model->getJWT()]);
+        return $this->success($res);
     }
 
     public function signup()
     {
         $data = $this->_request->getParsedBody();
         try {
-            $user = new UserModel();
-            $res = $user->signup($data);
-            var_dump($res);
+            $res = $this->_model->signup($data);
         } catch (\Exception $e) {
+            return $this->error(
+                $e->getCode(),
+                empty($e->getMessage()) ? $this->_ERR_MSG[$e->getCode()] : $e->getMessage()
+            );
         }
+
+        return $this->success($res);
     }
 }
