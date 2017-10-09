@@ -11,7 +11,6 @@ require "FluentPDO/FluentPDO.php";
 define("SERVER_URL", preg_split("/\/public/", dirname($_SERVER['REQUEST_SCHEME'].'://'.$_SERVER['SERVER_NAME'].':'.$_SERVER['SERVER_PORT'].$_SERVER['PHP_SELF']))[0]);
 define('SETTING_PATH', APP_PATH.'/Settings.php');
 define('PUBLIC_PATH', APP_PATH.'/../public');
-define('ROOT_PATH', __DIR__.'/..');
 
 
 // load core file
