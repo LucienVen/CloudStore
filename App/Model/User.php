@@ -16,7 +16,7 @@ class User extends \Core\Model
                 $res['data'] = $this->from()->where('phone', $data['phone'])->fetch();
                 if (password_verify($data['password'], $res['data']['password'])) {
                     unset($res['data']['password']);
-                    $this->setJWT($res['data']['phone'], \Core\Config::get('jwt'), \Core\Config::get('secret'), "Admin");
+                    $this->setJWT($res['data']['phone'], \Core\Config::get('jwt'), \Core\Config::get('secret'), 'Admin');
 
                     return $res;
                 }
@@ -32,10 +32,11 @@ class User extends \Core\Model
             if (isset($data['password']) && !is_null($data['password'])) {
                 $data['password'] = password_hash($data['password'], PASSWORD_DEFAULT);
                 $res = $this->insertInto('', $data)->execute();
-                if (0 != $res) {
-                    unset($res['data']['password']);
+                if ($res) {
+                    $newuser = $this->from()->where('id', $res)->fetch();
+                    unset($newuser['password']);
 
-                    return $res;
+                    return $newuser;
                 }
             }
         }
