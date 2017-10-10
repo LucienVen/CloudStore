@@ -7,7 +7,7 @@
 #
 # Host: 127.0.0.1 (MySQL 5.7.14)
 # Database: cloudstore
-# Generation Time: 2017-09-30 01:55:21 +0000
+# Generation Time: 2017-10-10 02:11:32 +0000
 # ************************************************************
 
 
@@ -41,20 +41,6 @@ CREATE TABLE `address` (
 
 
 
-# Dump of table attr_option
-# ------------------------------------------------------------
-
-DROP TABLE IF EXISTS `attr_option`;
-
-CREATE TABLE `attr_option` (
-  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `option_value` varchar(50) NOT NULL DEFAULT '' COMMENT '属性选项',
-  `attr_id` int(11) NOT NULL COMMENT '属性id',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-
-
 # Dump of table attr
 # ------------------------------------------------------------
 
@@ -69,42 +55,15 @@ CREATE TABLE `attr` (
 
 
 
-# Dump of table commodity
+# Dump of table attr_option
 # ------------------------------------------------------------
 
-DROP TABLE IF EXISTS `commodity`;
+DROP TABLE IF EXISTS `attr_option`;
 
-CREATE TABLE `commodity` (
+CREATE TABLE `attr_option` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `cate_id` int(11) NOT NULL COMMENT '分类id',
-  `goods_name` varchar(50) NOT NULL DEFAULT '' COMMENT '商品名称',
-  `cover_path` varchar(255) DEFAULT NULL COMMENT '商品封面图片路径',
-  `single_price` decimal(10,2) NOT NULL COMMENT '商品单价',
-  `title` varchar(255) NOT NULL DEFAULT '' COMMENT '商品标题',
-  `content` text COMMENT '商品详细',
-  `service` varchar(30) DEFAULT NULL COMMENT '存储字符串， 1-7天无理由退货，2-15天无忧换货，3-满119包邮，4-顺丰发货5-云音乐自营',
-  `in_stock` int(5) NOT NULL DEFAULT '0' COMMENT '库存量',
-  `is_hot_sale` tinyint(3) NOT NULL DEFAULT '0' COMMENT '热销商品，1-是，0-否',
-  `is_recommd` tinyint(3) NOT NULL DEFAULT '0' COMMENT '编辑推荐，1-是，0-否',
-  `is_delete` tinyint(3) NOT NULL DEFAULT '0' COMMENT '软删除',
-  `create_time` int(10) DEFAULT NULL,
-  `update_time` int(10) DEFAULT NULL,
-  `status` tinyint(3) DEFAULT NULL COMMENT '0-未审核，1-已通过，2-未通过',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-
-
-# Dump of table sku_attr
-# ------------------------------------------------------------
-
-DROP TABLE IF EXISTS `sku_attr`;
-
-CREATE TABLE `sku_attr` (
-  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `sku_id` int(11) NOT NULL COMMENT '商品id',
+  `option_value` varchar(50) NOT NULL DEFAULT '' COMMENT '属性选项',
   `attr_id` int(11) NOT NULL COMMENT '属性id',
-  `opt_id` int(11) NOT NULL COMMENT '属性选项id',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -187,6 +146,21 @@ CREATE TABLE `SKU` (
 
 
 
+# Dump of table sku_attr
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `sku_attr`;
+
+CREATE TABLE `sku_attr` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `sku_id` int(11) NOT NULL COMMENT '商品id',
+  `attr_id` int(11) NOT NULL COMMENT '属性id',
+  `opt_id` int(11) NOT NULL COMMENT '属性选项id',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+
 # Dump of table sku_detail
 # ------------------------------------------------------------
 
@@ -226,6 +200,29 @@ CREATE TABLE `SPU` (
 
 
 
+# Dump of table test
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `test`;
+
+CREATE TABLE `test` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+LOCK TABLES `test` WRITE;
+/*!40000 ALTER TABLE `test` DISABLE KEYS */;
+
+INSERT INTO `test` (`id`, `name`)
+VALUES
+	(1,'123'),
+	(2,'abada');
+
+/*!40000 ALTER TABLE `test` ENABLE KEYS */;
+UNLOCK TABLES;
+
+
 # Dump of table user
 # ------------------------------------------------------------
 
@@ -233,9 +230,9 @@ DROP TABLE IF EXISTS `user`;
 
 CREATE TABLE `user` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `phone` int(11) NOT NULL,
+  `phone` varchar(11) NOT NULL DEFAULT '',
   `username` varchar(30) NOT NULL DEFAULT '' COMMENT '用户名',
-  `password` varchar(50) NOT NULL DEFAULT '',
+  `password` varchar(255) NOT NULL DEFAULT '',
   `is_root` tinyint(3) NOT NULL DEFAULT '0' COMMENT '是否管理员用户，1-是，0-否，默认为0',
   `is_delete` tinyint(3) NOT NULL DEFAULT '0' COMMENT '软删除',
   `create_time` int(10) DEFAULT NULL,
@@ -244,6 +241,15 @@ CREATE TABLE `user` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+LOCK TABLES `user` WRITE;
+/*!40000 ALTER TABLE `user` DISABLE KEYS */;
+
+INSERT INTO `user` (`id`, `phone`, `username`, `password`, `is_root`, `is_delete`, `create_time`, `update_time`, `status`)
+VALUES
+	(1,'15625581287','Lv','123456',0,0,NULL,NULL,0);
+
+/*!40000 ALTER TABLE `user` ENABLE KEYS */;
+UNLOCK TABLES;
 
 
 # Dump of table user_detail
