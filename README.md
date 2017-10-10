@@ -13,11 +13,12 @@ data:
 }
 ```
 
-response:
+response: 
+
+status`200, 422`
 
 ```
 {
-  code: 200,
   data: {
     uid: 1,
     phone: 12345678123,
@@ -43,9 +44,10 @@ data:
 
 response:
 
+status`200, 422`
+
 ```
 {
-  code: 200,
   data: {
     uid: 1,
     phone: 1231414312,
