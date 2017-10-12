@@ -4,15 +4,11 @@ namespace Core;
 
 class Validate
 {
-    /** @var \Core\Model*/
-    private $_model;
     /** @var array */
     private $_rules;
 
-    public function __construct(\Core\Model $model, $rules = array())
+    public function __construct($rules = array())
     {
-        // Model instance
-        $this->_model = $model;
         // default rule
         $this->_rules = $rules;
     }
@@ -24,7 +20,7 @@ class Validate
      *
      * @return Validate
      */
-    public function add($rules)
+    public function addRules(array $rules)
     {
         // merge default value
         foreach ($rules as $key => $value) {
@@ -44,7 +40,7 @@ class Validate
      * @param array $rules
      * @return Validate
      */
-    public function reset($rules)
+    public function resetRules($rules)
     {
         $this->_rules = $rules;
 
@@ -59,14 +55,21 @@ class Validate
      */
     public function check($data)
     {
-        // var_dump($this->_rules);
-        // merge the default value and data
-        if (!empty($data)) {
-            $data = array_merge($this->_model->getDefault(), $data);
-        }
-
         // search rule's function
         foreach ($this->_rules as $key => $value) {
+            if ($key == "default") {
+                // merge the default value and data
+                if (!empty($data)) {
+                    $data = array_merge($this->_default, $data);
+                }
+                continue;
+            }
+            if ($key == "autotime") {
+                continue;
+            }
+            if ($key == "autoupdate") {
+                continue;
+            }
             if (!$this->{$key}($value, $data)) {
                 throw new \Exception(implode(' or ', array_keys($value)).' '.$key.': field error!', 422);
             }
