@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Action;
+use Firebase\JWT\JWT;
 
 class Test extends \Core\Action
 {
@@ -9,9 +10,11 @@ class Test extends \Core\Action
         parent::__construct($c);
     }
 
-    public function test1()
+    public function info()
     {
-        return $this->success("success");
+        $token = $this->_container['cookie']->get('token');
+        $jwt = (array) JWT::decode($token, \Core\Config::get('secret'), array('HS256'));
+        return $this->success($jwt);
     }
 
     public function test()
