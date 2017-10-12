@@ -1,7 +1,5 @@
 <?php
 
-namespace Core;
-
 class DefException extends \Exception
 {
     public static function handle(\Exception $e)

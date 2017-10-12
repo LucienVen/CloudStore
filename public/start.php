@@ -7,9 +7,7 @@
     return $next($request, $response);
 });
 
-// load application file
-require CORE_PATH."/Application.php";
-
+// load slim dependencies
 if (file_exists(APP_PATH."/Dependencies.php")) {
     require APP_PATH."/Dependencies.php";
 }
@@ -19,4 +17,5 @@ foreach (glob(APP_PATH.'/Route/*.route.php') as $path) {
     require $path;
 }
 
+// run slim
 \Core\Start::run();
