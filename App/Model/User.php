@@ -2,44 +2,81 @@
 
 namespace App\Model;
 
+use Core\Validate;
+
 class User extends \Core\Model
 {
+    // validate config
+    private $_validate;
+    private $_rules = [
+        'require' => ['phone', 'password'],
+        'length' => ['phone' => '11', 'password' => '6,20'],
+        'default' => ['is_delete' => 0, 'status' => 1],
+    ];
+
     public function __construct()
     {
         parent::__construct();
+        // init validate
+        $this->_validate = new Validate($this->_rules);
     }
 
+    /**
+     * login
+     *
+     * @param array $data
+     * @return array
+     */
     public function login($data)
     {
-        if (isset($data['phone']) && !is_null($data['phone'])) {
-            if (isset($data['password']) && !is_null($data['password'])) {
-                $res['data'] = $this->from()->where('phone', $data['phone'])->fetch();
-                if (password_verify($data['password'], $res['data']['password'])) {
-                    unset($res['data']['password']);
-                    $this->setJWT($res['data']['phone'], \Core\Config::get('jwt'), \Core\Config::get('secret'), 'Admin');
+        // check
+        $this->_validate->check($data);
 
-                    return $res;
-                }
-                throw new \Exception('Username or Password Error!', 422);
-            }
+        // find data in database
+        $res['data'] = $this->from()->where('phone', $data['phone'])->fetch();
+        // check password
+        if (!password_verify($data['password'], $res['data']['password'])) {
+            throw new \Exception('Username or Password Error!', 422);
         }
-        throw new \Exception('Data Invalidate!', 422);
+        $this->setJWT($res['data']['phone'], \Core\Config::get('jwt'), \Core\Config::get('secret'), 'Admin');
+        unset($res['data']['password']);
+
+        return $res;
     }
 
+    /**
+     * sign up
+     *
+     * @param array $data
+     * @return array
+     */
     public function signup($data)
     {
-        if (isset($data['phone']) && !is_null($data['phone'])) {
-            if (isset($data['password']) && !is_null($data['password'])) {
-                $data['password'] = password_hash($data['password'], PASSWORD_DEFAULT);
-                $res = $this->insertInto('', $data)->execute();
-                if ($res) {
-                    $newuser = $this->from()->where('id', $res)->fetch();
-                    unset($newuser['password']);
+        // check and auto insert the time field
+        $this->_validate->addRules([
+            'autotime' => 'create_time',
+            'autoupdate' => 'update_time'
+        ])->check($data);
 
-                    return $newuser;
-                }
-            }
+        // password encry
+        $data['password'] = password_hash($data['password'], PASSWORD_DEFAULT);
+        // add default username
+        $data['username'] = 'cloud_'.$data['phone'];
+
+        // phone number exitis check
+        if ($this->from()->where('phone', $data['phone'])->fetch()) {
+            throw new \Exception('Phone has been Signed!', 422);
         }
-        throw new \Exception('Data Invalidate!', 422);
+
+        // insert and filter value
+        if ($res = $this->insertInto()->field()->values($data)->execute()) {
+            // get the new user info
+            $newuser = $this->from()->where('id', $res)->fetch();
+            unset($newuser['password']);
+
+            return $newuser;
+        }
+
+        throw new \Exception('Error!', 422);
     }
 }

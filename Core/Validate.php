@@ -24,6 +24,10 @@ class Validate
     {
         // merge default value
         foreach ($rules as $key => $value) {
+            if ('autotime' == $key || 'autoupdate' == $key) {
+                $this->_rules[$key] = $value;
+                continue;
+            }
             if (array_key_exists($key, $this->_rules)) {
                 array_merge($this->_rules[$key], $value);
             } else {

@@ -25,7 +25,7 @@ class Action
     protected $_docURL;
 
     /**
-     * 请求类
+     * 请求类.
      *
      * @var RequestInterface
      */
@@ -39,14 +39,14 @@ class Action
     protected $_response;
 
     /**
-     * 路由参数
+     * 路由参数.
      *
-     * @var Array
+     * @var array
      */
     protected $_args;
 
     /**
-     * Model 实例
+     * Model 实例.
      *
      * @var \Core\Model
      */
@@ -63,17 +63,17 @@ class Action
     public function __construct(\Slim\Container $container)
     {
         // TODO
-        $docURL = "";
+        $docURL = SERVER_URL.'/help';
         $this->_container = $container;
         // 对操作请求进行，并返回响应
-        $this->_request = $container->get("request");
-        $this->_response = $container->get("response");
+        $this->_request = $container->get('request');
+        $this->_response = $container->get('response');
         // 获取需要操作的路由参数
         $this->_args = $container->get('args');
         // 获取模型实例
         $reflection = new \ReflectionClass($this);
-        $modelname = "\\App\\Model\\".$reflection->getShortName();
-        $this->_model = new $modelname;
+        $modelname = '\\App\\Model\\'.$reflection->getShortName();
+        $this->_model = new $modelname();
         // 初始化帮助地址
         $this->_docURL = $docURL;
     }
@@ -93,11 +93,11 @@ class Action
      *
      * @param \Slim\Http\Cookies $cookie
      * @param array|string       $value
-     * @param String             $path
+     * @param string             $path
      * @param string             $expires
      * @param bool               $httponly
      */
-    protected function cookie($cookie, $value, $path = "/", $expires = null, $httponly = false)
+    protected function cookie($cookie, $value, $path = '/', $expires = null, $httponly = false)
     {
         if (is_array($value)) {
             foreach ($value as $k => $v) {
@@ -146,6 +146,7 @@ class Action
             // undefined system error
             $code = 400;
         }
+
         return $this->_response->withJson([
             'message' => is_null($info) ? (array_key_exists($code, $this->_ERR_MSG) ? $this->_ERR_MSG[$code] : 'Unknow Operation') : $info,
             'documentation' => $this->_docURL,
