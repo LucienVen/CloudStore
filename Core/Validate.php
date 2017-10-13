@@ -57,17 +57,14 @@ class Validate
     {
         // search rule's function
         foreach ($this->_rules as $key => $value) {
+            // insert default fields
             if ($key == "default") {
-                // merge the default value and data
-                if (!empty($data)) {
-                    $data = array_merge($this->_default, $data);
-                }
+                $data = array_merge($value, $data);
                 continue;
             }
-            if ($key == "autotime") {
-                continue;
-            }
-            if ($key == "autoupdate") {
+            // insert the create time or update time
+            if ($key == "autotime" || $key == "autoupdate") {
+                $data = array_merge([$value => time()], $data);
                 continue;
             }
             if (!$this->{$key}($value, $data)) {
