@@ -35,9 +35,10 @@ class Validate
     }
 
     /**
-     * reset default rules
+     * reset default rules.
      *
      * @param array $rules
+     *
      * @return Validate
      */
     public function resetRules($rules)
@@ -48,25 +49,29 @@ class Validate
     }
 
     /**
-     * check data by rule
+     * check data by rule.
      *
      * @param array $data
-     * @return void
+     * @param array $rules temporary rules
      */
-    public function check($data)
+    public function check(&$data, $rules = array())
     {
+        if (empty($rules) || is_null($rules)) {
+            $rules = $this->_rules;
+        }
         // search rule's function
-        foreach ($this->_rules as $key => $value) {
+        foreach ($rules as $key => $value) {
             // insert default fields
-            if ($key == "default") {
+            if ('default' == $key) {
                 $data = array_merge($value, $data);
                 continue;
             }
             // insert the create time or update time
-            if ($key == "autotime" || $key == "autoupdate") {
+            if ('autotime' == $key || 'autoupdate' == $key) {
                 $data = array_merge([$value => time()], $data);
                 continue;
             }
+            // call the rules function
             if (!$this->{$key}($value, $data)) {
                 throw new \Exception(implode(' or ', array_keys($value)).' '.$key.': field error!', 422);
             }
@@ -124,14 +129,20 @@ class Validate
         foreach ($rule as $key => $value) {
             if (array_key_exists($key, $data)) {
                 // the number that value between with
-                $bwt = explode(',', $value);
+                $bwt = explode(',', $value, 2);
                 // data's value
                 $len = $data[$key];
                 // string's length
                 if (is_string($data[$key])) {
                     $len = strlen($data[$key]);
                 }
-                if ($len < (int) $bwt[0] || $len > (int) $bwt[1]) {
+                // provision the fixed length
+                if (1 == count($bwt)) {
+                    if ($len != $bwt[0]) {
+                        return false;
+                    }
+                    // provision the scope of length
+                } elseif ($len < (int) $bwt[0] || $len > (int) $bwt[1]) {
                     return false;
                 }
             }
@@ -141,11 +152,12 @@ class Validate
     }
 
     /**
-     * email check
+     * email check.
      *
      * @param array $rule
      * @param array $data
-     * @return boolean
+     *
+     * @return bool
      */
     private function email($rule, $data)
     {
@@ -161,11 +173,10 @@ class Validate
     }
 
     /**
-     * call undefine function
+     * call undefine function.
      *
      * @param string $name
-     * @param array $arguments
-     * @return void
+     * @param array  $arguments
      */
     public function __call($name, $arguments)
     {
