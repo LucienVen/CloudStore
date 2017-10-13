@@ -13,6 +13,12 @@ $container['cookie'] = function ($c) {
 };
 
 $container['jwt'] = function ($c) {
-    $jwt = (array) Firebase\JWT\JWT::decode($c->get('cookie')['token'], \Core\Config::get('secret'), array('HS256'));
-    return $jwt;
+    $cookie = $c->get('cookie');
+    if (isset($cookie['token']) && !empty($cookie['token'])) {
+        $jwt = (array) Firebase\JWT\JWT::decode($cookie['token'], \Core\Config::get('secret'), array('HS256'));
+
+        return $jwt;
+    }
+
+    return false;
 };

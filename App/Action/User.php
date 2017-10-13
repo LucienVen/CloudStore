@@ -25,6 +25,13 @@ class User extends \Core\Action
         return $this->success($res);
     }
 
+    public function logout()
+    {
+        $this->cookie($this->_container['newcookie'], ['token' => '']);
+
+        return $this->success('log out success!');
+    }
+
     /**
      * sign up action.
      *
@@ -69,28 +76,30 @@ class User extends \Core\Action
     }
 
     /**
-     * check user has been loged
+     * check user has been loged.
      *
-     * @param Request $request
+     * @param Request  $request
      * @param Response $response
      * @param callback $next
+     *
      * @return Response
      */
     public function checkToken($request, $response, $next)
     {
-        $jwt = $this->_container->get('jwt');
+        if ($jwt = $this->_container->get('jwt')) {
+            try {
+                if ($jwt['iss'] == \Core\Config::get('iss')) {
+                    if ($jwt['exp'] > time()) {
+                        $this->_model->info($jwt['aud']);
 
-        try{
-            if ($jwt['iss'] == \Core\Config::get('iss')) {
-                if ($jwt['exp'] > time()) {
-                    $this->_model->info($jwt['aud']);
-                    return $next($request, $response);
+                        return $next($request, $response);
+                    }
                 }
+            } catch (\Exception $e) {
+                return $this->error($e->getCode(), $e->getMessage());
             }
-        } catch (\Exception $e){
-            return $this->error($e->getCode(), $e->getMessage());
         }
 
-        return $this->error("User Don't Exist!", 404);
+        return $this->error(404, 'Login First, Please!');
     }
 }
