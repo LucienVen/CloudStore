@@ -11,8 +11,10 @@ class User extends \Core\Model
     private $_rules = [
         'require' => ['phone', 'password'],
         'length' => ['phone' => '11', 'password' => '6,20'],
-        'default' => ['is_delete' => 0, 'status' => 1],
+        'default' => ['is_root' => 0, 'is_delete' => 0, 'status' => 1],
     ];
+
+    private $_prefixName = 'cloud_';
 
     public function __construct()
     {
@@ -22,9 +24,10 @@ class User extends \Core\Model
     }
 
     /**
-     * login
+     * login.
      *
      * @param array $data
+     *
      * @return array
      */
     public function login($data)
@@ -33,35 +36,39 @@ class User extends \Core\Model
         $this->_validate->check($data);
 
         // find data in database
-        $res['data'] = $this->from()->where('phone', $data['phone'])->fetch();
+        $res = $this->from()->where('phone', $data['phone'])->fetch();
         // check password
-        if (!password_verify($data['password'], $res['data']['password'])) {
+        if (!password_verify($data['password'], $res['password'])) {
             throw new \Exception('Username or Password Error!', 422);
         }
-        $this->setJWT($res['data']['phone'], \Core\Config::get('jwt'), \Core\Config::get('secret'), 'Admin');
-        unset($res['data']['password']);
+        $this->setJWT($res['phone'], \Core\Config::get('jwt'), \Core\Config::get('secret'), $res['is_delete']);
+        unset($res['password']);
 
         return $res;
     }
 
     /**
-     * sign up
+     * sign up.
      *
      * @param array $data
+     *
      * @return array
      */
     public function signup($data)
     {
+        // invalide sign up the root user
+        unset($data['is_root']);
+
         // check and auto insert the time field
         $this->_validate->addRules([
             'autotime' => 'create_time',
-            'autoupdate' => 'update_time'
+            'autoupdate' => 'update_time',
         ])->check($data);
 
         // password encry
         $data['password'] = password_hash($data['password'], PASSWORD_DEFAULT);
         // add default username
-        $data['username'] = 'cloud_'.$data['phone'];
+        $data['username'] = $this->_prefixName.$data['phone'];
 
         // phone number exitis check
         if ($this->from()->where('phone', $data['phone'])->fetch()) {
@@ -78,5 +85,23 @@ class User extends \Core\Model
         }
 
         throw new \Exception('Error!', 422);
+    }
+
+    /**
+     * get user info.
+     *
+     * @param int $id
+     *
+     * @return array
+     */
+    public function info($id)
+    {
+        if ($res = $this->from()->where('id', $id)->fetch()) {
+            unset($res['password']);
+
+            return $res;
+        }
+
+        throw new \Exception("User Don't Exist!", 404);
     }
 }

@@ -46,4 +46,20 @@ class User extends \Core\Action
 
         return $this->success($res);
     }
+
+    /**
+     * get user info
+     *
+     * @return Response
+     */
+    public function info()
+    {
+        try {
+            $res = $this->_model->info($this->_args['id']);
+        } catch (\Exception $e) {
+            return $this->error($e->getCode(), $e->getMessage());
+        }
+
+        return $this->success($res);
+    }
 }
