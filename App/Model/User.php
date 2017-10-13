@@ -41,7 +41,8 @@ class User extends \Core\Model
         if (!password_verify($data['password'], $res['password'])) {
             throw new \Exception('Username or Password Error!', 422);
         }
-        $this->setJWT($res['phone'], \Core\Config::get('jwt'), \Core\Config::get('secret'), $res['is_delete']);
+        // set jwt token
+        $this->setJWT($res['phone'], \Core\Config::get('jwt'), \Core\Config::get('secret'), $res['is_root']);
         unset($res['password']);
 
         return $res;
@@ -94,11 +95,24 @@ class User extends \Core\Model
      *
      * @return array
      */
-    public function info($id)
+    public function info($id = null)
     {
-        if ($res = $this->from()->where('id', $id)->fetch()) {
-            unset($res['password']);
+        // get all user info
+        if (is_null($id)) {
+            if ($res = $this->from()
+                        ->select(null)
+                        ->select(['id', 'phone', 'username'])
+                        ->limit(10)->fetchAll()) {
+                return $res;
+            }
+        }
 
+        // get special user info
+        if ($res = $this->from()
+                    ->where('id', $id)
+                    ->select(null)
+                    ->select(['id', 'phone', 'username'])
+                    ->fetch()) {
             return $res;
         }
 

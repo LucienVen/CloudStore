@@ -52,6 +52,11 @@ class Action
      */
     protected $_model;
 
+    /**
+     * 容器实例
+     *
+     * @var Slim\Container
+     */
     protected $_container;
 
     /**
@@ -62,8 +67,6 @@ class Action
     // public function __construct(\Psr\Http\Message\ResponseInterface $response)
     public function __construct(\Slim\Container $container)
     {
-        // TODO
-        $docURL = SERVER_URL.'/help';
         $this->_container = $container;
         // 对操作请求进行，并返回响应
         $this->_request = $container->get('request');
@@ -75,7 +78,8 @@ class Action
         $modelname = '\\App\\Model\\'.$reflection->getShortName();
         $this->_model = new $modelname();
         // 初始化帮助地址
-        $this->_docURL = $docURL;
+        // TODO
+        $this->_docURL = SERVER_URL.'/help';
     }
 
     /**

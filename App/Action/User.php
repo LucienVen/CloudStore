@@ -4,11 +4,6 @@ namespace App\Action;
 
 class User extends \Core\Action
 {
-    public function __construct($c)
-    {
-        parent::__construct($c);
-    }
-
     /**
      * login action.
      *
@@ -48,14 +43,24 @@ class User extends \Core\Action
     }
 
     /**
-     * get user info
+     * get user info.
      *
      * @return Response
      */
     public function info()
     {
         try {
-            $res = $this->_model->info($this->_args['id']);
+            // check is the root user
+            if (empty($this->_args['id'])) {
+                if (!(int) $this->_container->get('jwt')['logInAs']) {
+                    // don't have root
+                    throw new \Exception('Permissions Denied!', 400);
+                } else {
+                    $res = $this->_model->info();
+                }
+            } else {
+                $res = $this->_model->info($this->_args['id']);
+            }
         } catch (\Exception $e) {
             return $this->error($e->getCode(), $e->getMessage());
         }

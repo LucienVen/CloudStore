@@ -9,5 +9,9 @@ $container['newcookie'] = function ($c) {
 };
 
 $container['cookie'] = function ($c) {
-    return new \Slim\Http\Cookies($c->get('request')->getCookieParams());
+    return $c->get('request')->getCookieParams();
+};
+
+$container['jwt'] = function ($c) {
+    return (array) Firebase\JWT\JWT::decode($c->get('cookie')['token'], \Core\Config::get('secret'), array('HS256'));
 };
