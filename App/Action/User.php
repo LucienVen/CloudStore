@@ -67,4 +67,30 @@ class User extends \Core\Action
 
         return $this->success($res);
     }
+
+    /**
+     * check user has been loged
+     *
+     * @param Request $request
+     * @param Response $response
+     * @param callback $next
+     * @return Response
+     */
+    public function checkToken($request, $response, $next)
+    {
+        $jwt = $this->_container->get('jwt');
+
+        try{
+            if ($jwt['iss'] == \Core\Config::get('iss')) {
+                if ($jwt['exp'] > time()) {
+                    $this->_model->info($jwt['aud']);
+                    return $next($request, $response);
+                }
+            }
+        } catch (\Exception $e){
+            return $this->error($e->getCode(), $e->getMessage());
+        }
+
+        return $this->error("User Don't Exist!", 404);
+    }
 }

@@ -13,5 +13,6 @@ $container['cookie'] = function ($c) {
 };
 
 $container['jwt'] = function ($c) {
-    return (array) Firebase\JWT\JWT::decode($c->get('cookie')['token'], \Core\Config::get('secret'), array('HS256'));
+    $jwt = (array) Firebase\JWT\JWT::decode($c->get('cookie')['token'], \Core\Config::get('secret'), array('HS256'));
+    return $jwt;
 };

@@ -42,7 +42,7 @@ class User extends \Core\Model
             throw new \Exception('Username or Password Error!', 422);
         }
         // set jwt token
-        $this->setJWT($res['phone'], \Core\Config::get('jwt'), \Core\Config::get('secret'), $res['is_root']);
+        $this->setJWT($res['id'], \Core\Config::get('jwt'), \Core\Config::get('secret'), $res['is_root']);
         unset($res['password']);
 
         return $res;
@@ -79,8 +79,11 @@ class User extends \Core\Model
         // insert and filter value
         if ($res = $this->insertInto()->field()->values($data)->execute()) {
             // get the new user info
-            $newuser = $this->from()->where('id', $res)->fetch();
-            unset($newuser['password']);
+            $newuser = $this->from()
+                        ->where('id', $res)
+                        ->select(null)
+                        ->select(['id', 'phone', 'username'])
+                        ->fetch();
 
             return $newuser;
         }

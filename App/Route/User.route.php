@@ -6,7 +6,7 @@ $app->group('/auth', function () {
 });
 
 $app->group('/user', function () {
-    $this->get('[/{id}]', "\App\Action\User:info");
+    $this->get('[/{id}]', "\App\Action\User:info")->add("\App\Action\User:checkToken");
     $this->post('', "\App\Action\User:signup");
-    $this->put('/{id}', "\App\Action\User:update");
+    $this->put('/{id}', "\App\Action\User:update")->add("\App\Action\User:checkToken");
 });
