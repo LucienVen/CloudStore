@@ -43,4 +43,37 @@ class Model extends \FluentPDO
 
         $this->_jwt = JWT::encode($token, $key);
     }
+
+    /**
+     * add prefix to data key
+     *
+     * @param array $data
+     * @param string $thisTable
+     * @param string $joinTable
+     * @return array
+     */
+    protected function tablePrefix($data, $thisTable, $joinTable)
+    {
+        foreach ($data as $key => $value) {
+            // search key in table's field
+            foreach ($this->getField() as $field) {
+                // key in table
+                if ($field == $key) {
+                    // add prefix
+                    unset($data[$key]);
+                    $key = $thisTable.'.'.$key;
+                    $data[$key] = $value;
+                    break;
+                }
+            }
+            // in another table
+            if (!strpos($key, '.')) {
+                unset($data[$key]);
+                $key = $joinTable.'.'.$key;
+                $data[$key] = $value;
+            }
+        }
+
+        return $data;
+    }
 }
