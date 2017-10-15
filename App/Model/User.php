@@ -125,7 +125,7 @@ class User extends \Core\Model
      *
      * @return array
      */
-    public function info($id = null)
+    public function info($id)
     {
         // get special user info
         if ($res = $this->from()
