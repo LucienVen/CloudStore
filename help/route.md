@@ -24,6 +24,10 @@ GET: `/product/detail` 商品详情
 
 GET: `/cart` 购物车商品
 
+
+
+GET: `/search` 搜索
+
 ## 
 
 GET: `/user/orders` 订单详情
