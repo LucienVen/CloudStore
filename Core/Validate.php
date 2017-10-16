@@ -156,6 +156,31 @@ class Validate
     }
 
     /**
+     * field has choose value
+     *
+     * @param array $rule
+     * @param array $data
+     * @return boolean
+     */
+    public function choose($rule, $data)
+    {
+        foreach ($rule as $key => $value) {
+            if (array_key_exists($key, $data)) {
+                $vs = explode(',', $value);
+                $flag = 0;
+                foreach ($v as $vs) {
+                    $flag = ''.$data[$key] == $v ? 1 : $flag;
+                }
+                if (!$flag) {
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    }
+
+    /**
      * email check.
      *
      * @param array $rule
