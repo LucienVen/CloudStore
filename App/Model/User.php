@@ -36,7 +36,7 @@ class User extends \Core\Model
         $this->_validate->check($data);
 
         // find data in database
-        if ($res = $this->from()->where('phone', $data['phone'])->fetch()) {
+        if ($res = $this->from()->where(['phone' => $data['phone'], 'is_delete' => 0])->fetch()) {
             // check password
             if (!password_verify($data['password'], $res['password'])) {
                 throw new \Exception('Username or Password Error!', 422);
@@ -109,6 +109,7 @@ class User extends \Core\Model
         // get all user info
         if ($res['data'] = $this->from()
                     ->leftJoin('user_detail ON user.id = user_detail.uid')
+                    ->where('is_delete', 0)
                     ->select(null)
                     ->select(['user.id', 'user.phone', 'user.username', 'user_detail.email'])
                     ->limit($offset)
@@ -130,7 +131,7 @@ class User extends \Core\Model
         // get special user info
         if ($res = $this->from()
                     ->leftJoin('user_detail ON user.id = user_detail.uid')
-                    ->where('user.id', $id)
+                    ->where(['user.id' => $id, 'user.is_delete' => 0])
                     ->select(null)
                     ->select(['user.id', 'user.phone', 'user.username', 'user_detail.email'])
                     ->fetch()) {
@@ -158,7 +159,7 @@ class User extends \Core\Model
 
         // check phone number
         if (isset($data['phone'])) {
-            if ($this->from()->where('phone', $data['phone'])->count()) {
+            if ($this->from()->where(['phone' => $data['phone'], 'is_delete' => 0])->count()) {
                 throw new \Exception("Phone Number Has Exist!", 422);
             }
         }
@@ -168,19 +169,17 @@ class User extends \Core\Model
         // add table prefix for join table
         $data = $this->tablePrefix($data, $this->table, $join);
 
-        if ($this->from()->where('id', $id)->count()) {
-            if ($res = $this->update()
-                        ->leftJoin($join.' ON user.id = '.$join.'.uid')
-                        ->set($data)
-                        ->where('user.id', $id)
-                        ->execute()) {
-                // get updated user info
-                $updateUser = $this->info($id);
+        if ($res = $this->update()
+                    ->leftJoin($join.' ON user.id = '.$join.'.uid')
+                    ->set($data)
+                    ->where('user.id', $id)
+                    ->execute()) {
+            // get updated user info
+            $updateUser = $this->info($id);
 
-                return $updateUser;
-            }
+            return $updateUser;
         }
 
-        throw new \Exception("User Don't Exist!", 404);
+        throw new \Exception("Update Error!", 422);
     }
 }
