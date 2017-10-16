@@ -181,7 +181,8 @@ App 目录下的`Settings.php`文件为该应用的配置文件
    protected function cookie($cookie, $value, $path = "/", $expires = null, $httponly = false);
    ```
 
-   ​
+
+
 
 实例：
 
@@ -215,6 +216,106 @@ class User extends Action
 
 ## 六、模型
 
+1. 添加连表查询所需的字段前缀
+
+   ``` php
+   array tablePrefix(array $data, string $thisTable, string $joinTable)
+   ```
+
 ## 七、验证器
+
+1. 初始化
+
+   ```php
+   void __construct(array $rules)
+
+   参数：
+       $rules: 验证规则，默认为空数组
+   ```
+
+2. `add` 添加新规则到已有的规则上
+
+   ```php
+   \Src\Validate\Validate addRules(array $rules)
+
+   参数：
+       $rules: 需要添加的规则
+       
+   返回值：
+       该实例自身
+   ```
+
+3. `reset` 重新设置规则
+
+   ```php
+   \Src\Validate\Validate resetRules(array $rules)
+
+   参数：
+       $rules: 需要添加的规则
+       
+   返回值：
+       该实例自身
+   ```
+
+4. `check` 进行规则验证
+
+   ```php
+   void check(array $data)
+
+   参数：
+       $data: 需要验证的数据
+   ```
+
+5. 验证规则格式：
+
+   ```php
+   $rules = [
+   	'require' => ['username']
+   ];
+   ```
+
+6. `require` 字段必须存在
+
+   ```php
+   'require' => ['username']
+   'require' => 'username'
+   ```
+
+7. `passcheck` 验证两次密码
+
+   ```php
+   'passcheck' => ['passwd', 'passwd2']
+   ```
+
+8. `length` 字段长度限制
+
+   ```php
+   'length' => ['username' => '6,20']
+   ```
+
+9. `email` 验证邮箱
+
+   ```php
+   'email' => ['email']
+   ```
+
+10. `choose` 选择值
+
+    ```json
+    'choose' => ['status' => '0,1']
+    ```
+
+11. `default` 默认值
+
+    ```php
+    'default' => ['root' => 6]
+    ```
+
+12. `autotime` && `autoupdate` 创建时间
+
+    ```php
+    'autotime' => 'create_time',
+    'autoupdate' => 'update_time'
+    ```
 
 ## 八、中间件
