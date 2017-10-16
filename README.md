@@ -1,6 +1,4 @@
-### Login 登录
-
-**POST** `/auth`
+**POST** `/auth` 登录
 
 data:
 
@@ -21,11 +19,9 @@ response:
 }
 ```
 
+---
 
-
-### Logout 登出
-
-**DELETE** `/auth`
+**DELETE** `/auth` 注销
 
 response:
 
@@ -33,11 +29,9 @@ response:
 "logout success!"
 ```
 
+---
 
-
-### Signup 注册
-
-**POST** `/user`
+**POST** `/user` 注册
 
 data: 
 
@@ -59,11 +53,9 @@ response:
 }
 ```
 
+---
 
-
-### Update 修改用户信息
-
-**PATCH** `/user/{id}`
+**PATCH** `/user/{id}` 修改用户信息
 
 data:
 
@@ -84,30 +76,13 @@ response:
 }
 ```
 
+---
 
+**GET** `/user` 获取用户信息
 
-### Info 获取用户信息
-
-**GET** `/user[/{id}]`
-
-`/user`为获取全部用户信息，需要管理员权限 ，可选参数：当前页数`page`、每页个数 `offset`
+可选参数：当前页数`page`、每页个数 `offset`
 
 response:
-
-```
-// all
-{
-  "all": 122,
-  "page": 1,
-  "data": [
-    {
-      "id": 1,
-      ...
-    },
-    ...
-  ]
-}
-```
 
 ```
 // one
@@ -115,5 +90,76 @@ response:
   "id": 1,
   ...
 }
+```
+
+---
+
+**GET** `/address` 获取地址信息
+
+response:
+
+````
+{
+  "all": 3,
+  "data": [
+    "id": 1
+    ...
+  ]
+}
+````
+
+---
+
+**PSOT** `/address` 添加新地址
+
+data:
+
+```
+{
+  "name": "姓名",
+  "address": "地址",
+  "phone": "联系电话"
+}
+```
+
+response:
+
+```
+{
+  "id": 3,
+  ...
+}
+```
+
+---
+
+**PATCH** `/address/{address_id}` 修改地址信息
+
+data:
+
+```
+{
+  "name": "姓名",
+  ...
+}
+```
+
+response:
+
+```
+{
+  "id": 3
+  ...
+}
+```
+
+---
+
+**DELETE** `/address/{address_id}` 删除地址
+
+response:
+
+```
+"Delete Success!"
 ```
 
