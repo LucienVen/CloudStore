@@ -6,17 +6,10 @@ use \Core\Validate;
 
 class Address extends \Core\Model
 {
-    private $_validate;
-    private $_rules = [
+    protected $_rules = [
         'require' => ['name', 'address', 'phone'],
         'length' => ['phone' => '11']
     ];
-
-    public function __construct()
-    {
-        parent::__construct();
-        $this->_validate = new Validate($this->_rules);
-    }
 
     /**
      * get address info

@@ -7,21 +7,13 @@ use Core\Validate;
 class User extends \Core\Model
 {
     // validate config
-    private $_validate;
-    private $_rules = [
+    protected $_rules = [
         'require' => ['phone', 'password'],
         'length' => ['phone' => '11', 'password' => '6,20'],
         'default' => ['is_root' => 0, 'is_delete' => 0, 'status' => 1],
     ];
 
     private $_prefixName = 'cloud_';
-
-    public function __construct()
-    {
-        parent::__construct();
-        // init validate
-        $this->_validate = new Validate($this->_rules);
-    }
 
     /**
      * login.
