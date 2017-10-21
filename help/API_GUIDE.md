@@ -301,17 +301,23 @@ class User extends Action
 
 10. `choose` 选择值
 
+   ```json
+   'choose' => ['status' => '0,1']
+   ```
+
+11. `depend` 字段依赖
+
     ```json
-    'choose' => ['status' => '0,1']
+    'depend' => ['cart' => 'cart_id']
     ```
 
-11. `default` 默认值
+12. `default` 默认值
 
     ```php
     'default' => ['root' => 6]
     ```
 
-12. `autotime` && `autoupdate` 创建时间
+13. `autotime` && `autoupdate` 创建时间
 
     ```php
     'autotime' => 'create_time',

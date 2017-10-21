@@ -162,7 +162,7 @@ class Validate
      * @param array $data
      * @return boolean
      */
-    public function choose($rule, $data)
+    private function choose($rule, $data)
     {
         foreach ($rule as $key => $value) {
             if (array_key_exists($key, $data)) {
@@ -202,6 +202,28 @@ class Validate
     }
 
     /**
+     * two field depend on each other
+     *
+     * @param array $rule
+     * @param array $data
+     * @return boolean
+     */
+    private function depend($rule, $data)
+    {
+        foreach ($rule as $key => $value) {
+            if (array_key_exists($key, $data)) {
+                if (array_key_exists($value, $data)) {
+                    continue;
+                } else {
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    }
+
+    /**
      * call undefine function.
      *
      * @param string $name
@@ -210,5 +232,15 @@ class Validate
     public function __call($name, $arguments)
     {
         throw new \Exception('call undefine function : '.$name, 500);
+    }
+
+    /**
+     * init the rules
+     *
+     * @param array $rules
+     */
+    public function __invoke($rules)
+    {
+        $this->_rules = $rules;
     }
 }
