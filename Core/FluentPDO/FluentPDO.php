@@ -56,8 +56,8 @@ class FluentPDO
         }
         $this->structure = $structure;
         $reflection = new \ReflectionClass($this);
-        $this->table = $db['prefix'] . strtolower($reflection->getShortName());
-        $this->field = $this->pdo->query("DESC " . $this->table)->fetchAll(PDO::FETCH_COLUMN);
+        $this->table = $db['prefix'] . strtolower(trim($reflection->getShortName()));
+        $this->field = $this->pdo->query("DESC `" . $this->table . "`")->fetchAll(PDO::FETCH_COLUMN);
     }
 
     /**
