@@ -651,3 +651,269 @@ response:
 
 ---
 
+### **GET** `/product/search` 获取搜索选项信息
+
+**param**: **(must)** `cateId1` 一级分类id
+
+response:
+
+```json
+{
+    "brand": [
+        "1MORE",
+        "AKG",
+        "Beats",
+        "in-voice",
+        "JBL",
+        "JVC",
+        "Kindle",
+        "Philips/飞利浦",
+        "QCY",
+        "SONY/索尼",
+        "三星",
+        "先锋",
+        "击音",
+        "威索尼可",
+        "松下",
+        "森海塞尔",
+        "漫步者（EDIFIER）",
+        "网易",
+        "达音科",
+        "铁三角",
+        "雷蛇(Razer)",
+        "魔声"
+    ],
+    "cate": [
+        {
+            "id": "1005000",
+            "name": "耳机耳麦"
+        },
+        {
+            "id": "1006000",
+            "name": "播放器"
+        },
+        {
+            "id": "1007000",
+            "name": "数码配件"
+        },
+        {
+            "id": "1009006",
+            "name": "音箱音响"
+        }
+    ],
+    "price": [
+        {
+            "begin": 0,
+            "end": 1666
+        },
+        {
+            "begin": 1667,
+            "end": 3332
+        },
+        {
+            "begin": 3333,
+            "end": 4998
+        }
+    ]
+}
+```
+
+---
+
+### **POST** `/product/search` 获取搜索商品信息
+
+data:
+
+```json
+{
+	"limit": 10,
+	"offset": 0,
+	"cateId1": 101000,
+	"orderBy": "DESC"
+}
+```
+
+response:
+
+```json
+{
+    "offset": 0,
+    "limit": 10,
+    "total": 100,
+    "products": [
+        {
+            "id": "6452052",
+            "cate_id": "1005000",
+            "name": "Beats Pro 录音师专业版 头戴式耳机",
+            "brand": "Beats",
+            "cover_url": "http://p4.music.126.net/8AzE5wrKMBvbjBBlU_tgDw==/18513576790470528.jpg",
+            "show_price": "2288.00",
+            "total_sold": "20",
+            "service": "8,12",
+            "is_hot_sale": "0",
+            "is_recommd": "1",
+            "is_delete": "0",
+            "create_time": "1508128917",
+            "update_time": "1508128917",
+            "status": "1",
+            "price": "2288.00"
+        },
+        {
+            "id": "6485072",
+            "cate_id": "1005000",
+            "name": "森海塞尔 hd600",
+            "brand": "森海塞尔",
+            "cover_url": "http://p3.music.126.net/tJY7s3ml0lvyOpV5kW8Bbg==/18548761162627463.jpg",
+            "show_price": "2199.00",
+            "total_sold": "0",
+            "service": "8,12",
+            "is_hot_sale": "0",
+            "is_recommd": "0",
+            "is_delete": "0",
+            "create_time": "1508128930",
+            "update_time": "1508128930",
+            "status": "1",
+            "price": "2199.00"
+        },
+        {
+            "id": "6454050",
+            "cate_id": "1005000",
+            "name": "Beats Studio Wireless 录音师无线蓝牙无线降噪头戴式耳机 内置麦克风",
+            "brand": "Beats",
+            "cover_url": "http://p3.music.126.net/tQHMJ0J8-3pQz0nzfSj3hA==/18513576790470526.jpg",
+            "show_price": "1999.00",
+            "total_sold": "92",
+            "service": "8,12",
+            "is_hot_sale": "0",
+            "is_recommd": "1",
+            "is_delete": "0",
+            "create_time": "1508128912",
+            "update_time": "1508128912",
+            "status": "1",
+            "price": "1999.00"
+        },
+        {
+            "id": "6487063",
+            "cate_id": "1009006",
+            "name": "漫步者（EDIFIER）S2000MKII 新旗舰 HIFI有源2.0多媒体音箱 蓝牙音箱 音响",
+            "brand": "漫步者（EDIFIER）",
+            "cover_url": "http://p3.music.126.net/JH4P85Hg6DvBe7X2Xjo52A==/19124905253840518.jpg",
+            "show_price": "1799.00",
+            "total_sold": "2",
+            "service": "8,12",
+            "is_hot_sale": "0",
+            "is_recommd": "0",
+            "is_delete": "0",
+            "create_time": "1508128933",
+            "update_time": "1508128933",
+            "status": "1",
+            "price": "1799.00"
+        },
+        {
+            "id": "6451051",
+            "cate_id": "1009006",
+            "name": "Beats Pill+ 便携式无线蓝牙胶囊音箱 重低音",
+            "brand": "Beats",
+            "cover_url": "http://p3.music.126.net/uIbOQcPGEl4PgWjvt_gHUw==/18598239185799374.jpg",
+            "show_price": "1688.00",
+            "total_sold": "16",
+            "service": "8,12",
+            "is_hot_sale": "0",
+            "is_recommd": "0",
+            "is_delete": "0",
+            "create_time": "1508128918",
+            "update_time": "1508128918",
+            "status": "1",
+            "price": "1688.00"
+        },
+        {
+            "id": "6453051",
+            "cate_id": "1005000",
+            "name": "Beats Solo2 头戴式耳机 线控带麦 有线版",
+            "brand": "Beats",
+            "cover_url": "http://p3.music.126.net/c_lGa8RgNPs-TvVZGuBOTA==/18513576790470538.jpg",
+            "show_price": "1288.00",
+            "total_sold": "16",
+            "service": "8,12",
+            "is_hot_sale": "0",
+            "is_recommd": "0",
+            "is_delete": "0",
+            "create_time": "1508128929",
+            "update_time": "1508128929",
+            "status": "1",
+            "price": "1288.00"
+        },
+        {
+            "id": "6601063",
+            "cate_id": "1007000",
+            "name": "雷蛇(Razer) 堡垒神蛛Turret 蓝牙2.4G无线双模游戏鼠标键盘套装",
+            "brand": "雷蛇(Razer)",
+            "cover_url": "http://p4.music.126.net/wolhWEHZbbKxjyVgOW8lxQ==/18589443092880494.jpg",
+            "show_price": "1229.00",
+            "total_sold": "0",
+            "service": "1,3,8,12",
+            "is_hot_sale": "0",
+            "is_recommd": "0",
+            "is_delete": "0",
+            "create_time": "1508128916",
+            "update_time": "1508128916",
+            "status": "1",
+            "price": "1229.00"
+        },
+        {
+            "id": "6489067",
+            "cate_id": "1009006",
+            "name": "漫步者（EDIFIER）S50 2.0声道家庭电视影院音响 无线蓝牙回音壁 SOUNDBAR",
+            "brand": "漫步者（EDIFIER）",
+            "cover_url": "http://p4.music.126.net/08CZtCqN25nNngX-K-U-tg==/18771962023049330.jpg",
+            "show_price": "1099.00",
+            "total_sold": "0",
+            "service": "8,12",
+            "is_hot_sale": "0",
+            "is_recommd": "0",
+            "is_delete": "0",
+            "create_time": "1508128933",
+            "update_time": "1508128933",
+            "status": "1",
+            "price": "1099.00"
+        },
+        {
+            "id": "6453053",
+            "cate_id": "1005000",
+            "name": "Beats X 蓝牙无线 入耳式运动耳机 带麦可通话",
+            "brand": "Beats",
+            "cover_url": "http://p4.music.126.net/NJniIAw50p4K2W-QkA3-aQ==/18588343581175348.jpg",
+            "show_price": "988.00",
+            "total_sold": "1296",
+            "service": "1,3,8,12",
+            "is_hot_sale": "0",
+            "is_recommd": "0",
+            "is_delete": "0",
+            "create_time": "1508128913",
+            "update_time": "1508128913",
+            "status": "1",
+            "price": "988.00"
+        },
+        {
+            "id": "6395065",
+            "cate_id": "1005000",
+            "name": "1MORE双单元Lightning主动降噪入耳式耳机",
+            "brand": "1MORE",
+            "cover_url": "http://p3.music.126.net/gI6_AReAOQ_NrsIULjWRsQ==/18756568860174996.jpg",
+            "show_price": "899.00",
+            "total_sold": "7",
+            "service": "1,3,7",
+            "is_hot_sale": "0",
+            "is_recommd": "0",
+            "is_delete": "0",
+            "create_time": "1508128928",
+            "update_time": "1508128928",
+            "status": "1",
+            "price": "899.00"
+        }
+    ]
+}
+```
+
+---
+

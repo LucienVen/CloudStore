@@ -35,4 +35,36 @@ class SKU extends \Core\Action
 
         return $this->success($res);
     }
+
+    /**
+     * get search option info
+     *
+     * @return Response
+     */
+    public function searchOptInfo()
+    {
+        try {
+            $res = $this->_model->searchOptInfo($this->_request->getQueryParams()['cateId1']);
+        } catch(\Exception $e) {
+            return $this->error($e->getCode(), $e->getMessage());
+        }
+
+        return $this->success($res);
+    }
+
+    /**
+     * search page
+     *
+     * @return Response
+     */
+    public function search()
+    {
+        try {
+            $res = $this->_model->search($this->_request->getParsedBody());
+        } catch(\Exception $e) {
+            return $this->error($e->getCode(), $e->getMessage());
+        }
+
+        return $this->success($res);
+    }
 }
