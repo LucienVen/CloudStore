@@ -20,7 +20,7 @@ class Autoload
         if (file_exists($loadPath)) {
             require $loadPath;
         } else {
-            throw new \Core\DefException("Load: ".$loadPath."<br>File does not exist!", 404);
+            throw new \Exception("Load: ".$loadPath.": File does not exist!", 404);
         }
     }
 }

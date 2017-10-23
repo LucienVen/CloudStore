@@ -10,8 +10,8 @@ require __DIR__.'/../vendor/autoload.php';
 // load PDO
 require "FluentPDO/FluentPDO.php";
 // load custom exception class
-require CORE_PATH."/DefException.php";
-set_exception_handler("DefException::handle");
+// require CORE_PATH."/DefException.php";
+// set_exception_handler("DefException::handle");
 
 // load autoload class
 require CORE_PATH."/Autoload.php";
