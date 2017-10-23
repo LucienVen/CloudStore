@@ -243,7 +243,7 @@ class Orders extends \Core\Model
     public function check($order_id, $data)
     {
         $this->_validate->addRules([
-            'require' => ['check_uid', 'result'],
+            'require' => ['check_uid'],
         ])->check($data);
 
         if (!$this->from()->where(['id' => $order_id])->fetch()) {
