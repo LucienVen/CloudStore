@@ -1,4 +1,5 @@
 <?php
+session_start();
 
 // application config file
 define("APP_PATH", __DIR__."/../App");
