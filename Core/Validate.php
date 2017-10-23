@@ -77,7 +77,7 @@ class Validate
             }
             // call the rules function
             if (!$this->{$key}($value, $data)) {
-                throw new \Exception(implode(' or ', array_keys($value)).' '.$key.': field error!', 422);
+                throw new \Exception('`'.implode('` or `', array_keys($value)).'`: {'.$key.'} Error!', 422);
             }
         }
     }
@@ -168,7 +168,7 @@ class Validate
             if (array_key_exists($key, $data)) {
                 $vs = explode(',', $value);
                 $flag = 0;
-                foreach ($v as $vs) {
+                foreach ($vs as $v) {
                     $flag = ''.$data[$key] == $v ? 1 : $flag;
                 }
                 if (!$flag) {
