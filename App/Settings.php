@@ -19,4 +19,10 @@ return [
     'jwt' => [
         'iss' => 'www.yvenchang.xyz',
     ],
+    'page_limit' => 10,
+    'pay_limit' => 1800,
+    'order_type' => [
+        'web' => '1',
+        'app' => '2'
+    ]
 ];
