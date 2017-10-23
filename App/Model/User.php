@@ -127,11 +127,14 @@ class User extends \Core\Model
                     ->select(null)
                     ->select(['user.id', 'user.phone', 'user.username', 'user_detail.email', 'user_detail.avater_id'])
                     ->fetch()) {
-            $res = array_merge($res, $this->from('media')
+            $detail = $this->from('media')
                                 ->where(['id' => $res['avater_id']])
                                 ->select(null)
                                 ->select('url_path as avater')
-                                ->fetch());
+                                ->fetch();
+            if ($detail) {
+                $res = array_merge($res, $detail);
+            }
             unset($res['avater_id']);
             return $res;
         }
