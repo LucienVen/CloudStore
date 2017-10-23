@@ -366,6 +366,7 @@ abstract class BaseQuery implements IteratorAggregate
      */
     public function field() {
         $this->setField = true;
+        $this->fpdo->field = $this->fpdo->pdo->query("DESC `" . $this->fpdo->table . "`")->fetchAll(PDO::FETCH_COLUMN);
 
         return $this;
     }

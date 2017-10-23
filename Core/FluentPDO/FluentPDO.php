@@ -28,7 +28,7 @@ class FluentPDO
 {
 
     /** @var \PDO */
-    protected $pdo;
+    public $pdo;
     /** @var \FluentStructure|null */
     protected $structure;
 
@@ -36,10 +36,13 @@ class FluentPDO
     public $debug;
 
     /** @var string */
-    protected $table;
+    public $table;
+
+    /** @var string */
+    public $oldTable;
 
     /** @var array */
-    protected $field;
+    public $field;
 
     /**
      * FluentPDO constructor.
@@ -56,7 +59,8 @@ class FluentPDO
         }
         $this->structure = $structure;
         $reflection = new \ReflectionClass($this);
-        $this->table = $db['prefix'] . strtolower(trim($reflection->getShortName()));
+        $this->oldTable = $db['prefix'] . strtolower(trim($reflection->getShortName()));
+        $this->table = $this->oldTable;
         $this->field = $this->pdo->query("DESC `" . $this->table . "`")->fetchAll(PDO::FETCH_COLUMN);
     }
 
@@ -69,8 +73,8 @@ class FluentPDO
      * @return \SelectQuery
      */
     public function from($table = '', $primaryKey = null) {
-        $table = $table ? $table : $this->table;
-        $query = new SelectQuery($this, $table);
+        $this->table = $table ? $table : $this->oldTable;
+        $query = new SelectQuery($this, $this->table);
         if ($primaryKey !== null) {
             $tableTable     = $query->getFromTable();
             $tableAlias     = $query->getFromAlias();
@@ -90,8 +94,8 @@ class FluentPDO
      * @return \InsertQuery
      */
     public function insertInto($table = '', $values = array()) {
-        $table = $table ? $table : $this->table;
-        $query = new InsertQuery($this, $table, $values);
+        $this->table = $table ? $table : $this->oldTable;
+        $query = new InsertQuery($this, $this->table, $values);
 
         return $query;
     }
@@ -106,8 +110,8 @@ class FluentPDO
      * @return \UpdateQuery
      */
     public function update($table = '', $set = array(), $primaryKey = null) {
-        $table = $table ? $table : $this->table;
-        $query = new UpdateQuery($this, $table);
+        $this->table = $table ? $table : $this->oldTable;
+        $query = new UpdateQuery($this, $this->table);
         $query->set($set);
         if ($primaryKey) {
             $primaryKeyName = $this->getStructure()->getPrimaryKey($table);
@@ -126,8 +130,8 @@ class FluentPDO
      * @return \DeleteQuery
      */
     public function delete($table = '', $primaryKey = null) {
-        $table = $table ? $table : $this->table;
-        $query = new DeleteQuery($this, $table);
+        $this->table = $table ? $table : $this->oldTable;
+        $query = new DeleteQuery($this, $this->table);
         if ($primaryKey) {
             $primaryKeyName = $this->getStructure()->getPrimaryKey($table);
             $query          = $query->where($primaryKeyName, $primaryKey);
@@ -145,7 +149,7 @@ class FluentPDO
      * @return \DeleteQuery
      */
     public function deleteFrom($table = '', $primaryKey = null) {
-        $table = $table ? $table : $this->table;
+        $this->table = $table ? $table : $this->oldTable;
         $args = func_get_args();
 
         return call_user_func_array(array($this, 'delete'), $args);
