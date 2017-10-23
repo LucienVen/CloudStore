@@ -125,8 +125,14 @@ class User extends \Core\Model
                     ->leftJoin('user_detail ON user.id = user_detail.uid')
                     ->where(['user.id' => $id, 'user.is_delete' => 0])
                     ->select(null)
-                    ->select(['user.id', 'user.phone', 'user.username', 'user_detail.email'])
+                    ->select(['user.id', 'user.phone', 'user.username', 'user_detail.email', 'user_detail.avater_id'])
                     ->fetch()) {
+            $res = array_merge($res, $this->from('media')
+                                ->where(['id' => $res['avater_id']])
+                                ->select(null)
+                                ->select('url_path as avater')
+                                ->fetch());
+            unset($res['avater_id']);
             return $res;
         }
 
