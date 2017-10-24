@@ -5,4 +5,4 @@ $app->group('/product', function() {
     $this->get('/search', "\App\Action\SKU:searchOptInfo");
     $this->post('/search', "\App\Action\SKU:search");
     $this->get('/{spu_id}', "\App\Action\SKU:detailInfo");
-})->add('\App\Action\User:checkToken');
+});

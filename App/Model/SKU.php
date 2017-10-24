@@ -18,9 +18,9 @@ class SKU extends \Core\Model
             $spus = $query->limit($limit)->offset($offset)->fetchAll();
             foreach ($spus as $k => $spu) {
                 $spus[$k] = array_merge($spus[$k], $this->from()
-                                    ->where(['spu_id' => $spu['id']])
+                                    ->where(['spu_id' => $spu['id'], 'is_delete' => 0])
                                     ->select(null)
-                                    ->select('price')->fetch());
+                                    ->select('price, original_price')->fetch());
             }
             // struct the result array
             $res['offset'] = $offset;
@@ -130,11 +130,14 @@ class SKU extends \Core\Model
         $offset = (!isset($params['offset']) || $params['offset'] < 0) ? 0 : $params['offset'];
         $limit = (!isset($params['limit']) || $params['limit'] <= 0) ? \Core\Config::get('page_limit') : $params['limit'];
 
+        $where = ['is_delete' => 0];
         // construct hot product query
         if ('hot' == $params['type']) {
-            $where = ['is_hot_sale' => 1, 'is_delete' => 0];
+            $where = array_merge($where, ['is_hot_sale' => 1]);
         } elseif ('suggest' == $params['type']) {
-            $where = ['is_recommd' => 1, 'is_delete' => 0];
+            $where = array_merge($where, ['is_recommd' => 1]);
+        } else {
+            throw new \Exception("Field Error!", 422);
         }
 
         // structure query
