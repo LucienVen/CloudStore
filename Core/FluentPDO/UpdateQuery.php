@@ -43,6 +43,13 @@ class UpdateQuery extends CommonQuery
      * @throws Exception
      */
     public function set($fieldOrArray, $value = false) {
+        if ($this->setField) {
+            foreach ($fieldOrArray as $k => $v) {
+                if(!in_array($k, $this->getFPDO()->getField())) {
+                    unset($fieldOrArray[$k]);
+                }
+            }
+        }
         if (!$fieldOrArray) {
             return $this;
         }
