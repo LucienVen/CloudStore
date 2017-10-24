@@ -24,5 +24,7 @@ return [
     'order_type' => [
         'web' => '1',
         'app' => '2'
-    ]
+    ],
+    'freight_limit' => 100,
+    'freight' => 10
 ];
