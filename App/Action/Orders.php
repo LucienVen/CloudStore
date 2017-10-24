@@ -73,7 +73,7 @@ class Orders extends \Core\Action
     public function check()
     {
         try {
-            $res = $this->_model->check($this->_args['order_id'], $this->_request->getParsedBody());
+            $res = $this->_model->check($this->_args['order_id'], $this->_container->get('jwt')['aud']);
         } catch (\Exception $e) {
             return $this->error($e->getCode(), $e->getMessage());
         }

@@ -236,21 +236,40 @@ class Orders extends \Core\Model
      * check the order for business.
      *
      * @param int   $order_id
-     * @param array $data
+     * @param int   $uid
      *
-     * @return bool
+     * @return boolean
      */
-    public function check($order_id, $data)
+    public function check($order_id, $uid)
     {
-        $this->_validate->addRules([
-            'require' => ['check_uid'],
-        ])->check($data);
+        // check trade means this trade is successful
+        // change the sold/stock value for sku info
+        if ($orderItems = $this->from('orders_items')->where(['order_id' => $order_id])->fetchAll()) {
+            foreach ($orderItems as $item) {
+                // get original sku and spu info
+                $sku = $this->from('sku')->where(['id' => $item['sku_id'], 'is_delete' => 0])->fetch();
+                $spu = $this->from('spu')->where(['id' => $sku['spu_id'], 'is_delete' => 0])->fetch();
 
-        if (!$this->from()->where(['id' => $order_id])->fetch()) {
+                // change stock/sold value
+                $this->update('sku')
+                    ->set(['stock' => (int)$sku['stock']-(int)$item['num'],
+                            'sold' => (int)$sku['sold']+(int)$item['num']])
+                    ->where(['id' => $item['sku_id'], 'is_delete' => 0])
+                    ->execute();
+                $this->update('spu')
+                    ->set(['total_sold' => (int)$spu['total_sold']+(int)$item['num']])
+                    ->where(['id' => $spu['id'], 'is_delete' => 0])
+                    ->execute();
+            }
+        } else {
             throw new \Exception("Order Don't Exist!", 404);
         }
 
-        if ($this->update()->set(['check_uid' => $data['check_uid'], 'status' => 2])->where($order_id)->execute()) {
+        // check
+        if ($this->update()
+                ->set(['check_uid' => $uid, 'status' => 2])
+                ->where(['id' => $order_id, 'is_delete' => 0])
+                ->execute()) {
             return true;
         }
 

@@ -4,7 +4,7 @@
 $app->group('/orders', function () {
     $this->get('[/{order_id}]', "\App\Action\Orders:info");
     $this->post('', "\App\Action\Orders:create");
-    $this->patch('/{order_id}', "\App\Action\Orders:check");
+    $this->patch('/{order_id}', "\App\Action\Orders:check")->add("\App\Action\User:checkRoot");
     $this->delete('/{order_id}', "\App\Action\Orders:deleteOrder");
     $this->patch('/{order_id}/express', "\App\Action\Orders:express");
     $this->get('/{order_id}/payment', "\App\Action\Orders:payInfo");
