@@ -1,8 +1,8 @@
 <?php
 
 // define const value
-define('ROOT_PATH', substr(__DIR__, 0, strrpos(__DIR__, "/")));
-define("SERVER_URL", preg_split("/\/public/", dirname($_SERVER['REQUEST_SCHEME'].'://'.$_SERVER['SERVER_NAME'].':'.$_SERVER['SERVER_PORT'].$_SERVER['PHP_SELF']))[0]);
+define('ROOT_PATH', substr(__DIR__, 0, strrpos(__DIR__, DIRECTORY_SEPARATOR)));
+define("SERVER_URL", preg_split("/\/public/", dirname('http://'.$_SERVER['SERVER_NAME'].':'.$_SERVER['SERVER_PORT'].$_SERVER['PHP_SELF']))[0]);
 define('PUBLIC_PATH', APP_PATH.'/../public');
 
 // load composer vendor
