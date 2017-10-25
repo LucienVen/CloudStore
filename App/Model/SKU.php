@@ -26,6 +26,7 @@ class SKU extends \Core\Model
             // has attribute
             if (isset($data['attribute']) && !is_null($data['attribute'])) {
                 // check sku_attr
+                $attribute = $data['attribute'];
                 $this->_validate->check($attribute, [
                     'require' => ['attr', 'opt'],
                     'default' => ['sku_id' => $skuId],

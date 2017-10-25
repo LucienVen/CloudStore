@@ -9,21 +9,26 @@ class Media extends \Core\Model
      *
      * @param string      $directory
      * @param UploadFiles $files
+     * @param boolean     $desc
      *
      * @return array
      */
-    public function detailFileUpload($directory, $files)
+    public function detailFileUpload($directory, $files, $desc)
     {
         $filedata = [];
         foreach ($files as $file) {
             if (UPLOAD_ERR_OK != $file->getError()) {
                 throw new \Exception($file->getError(), 500);
             }
-            $filedata = array_merge($filedata, $this->upload($directory, $file));
+            $filedata += $this->upload($directory, $file);
         }
 
-        $res['errno'] = 0;
-        $res['data'] = $filedata;
+        if ($desc) {
+            $res['errno'] = 0;
+            $res['data'] = array_values($filedata);
+        } else {
+            $res = $filedata;
+        }
 
         return $res;
     }
@@ -49,7 +54,7 @@ class Media extends \Core\Model
         $uploadedFile->moveTo($filepath);
         $res = $this->saveTo(['path' => $filepath, 'url_path' => $fileurl, 'type' => 0]);
 
-        return [$res['id'] => $res['url_path']];
+        return array($res['id'] => $res['url_path']);
     }
 
     /**

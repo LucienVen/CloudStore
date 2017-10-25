@@ -9,4 +9,5 @@ $app->group('/product', function() {
 
 $app->group('/product', function () {
     $this->post('', "\App\Action\Product:add");
-})->add("\App\Action\User:checkRoot");
+// })->add("\App\Action\User:checkRoot");
+});

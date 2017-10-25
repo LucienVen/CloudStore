@@ -193,18 +193,13 @@ class SPU extends \Core\Model
      */
     public function add($data, $files)
     {
-        $this->_valiadte->check($data, [
+        $this->_validate->check($data, [
             'require' => ['cate_id', 'name', 'brand', 'show_price', 'service', 'desc', 'skus', 'cover_url', 'media_id'],
             'choose' => ['is_hot_sale' => '0,1', 'is_recommd' => '0,1'],
             'default' => ['is_delete' => 0],
             'autotime' => 'create_time',
             'autoupdate' => 'update_time',
         ]);
-
-        // upload file
-        $media = new \App\Model\Media();
-        $info = $media->detailFileUpload(\Core\Config::get('media_path'), $files);
-        $data['cover_url'] = current($info['data']);
 
         // insert into spu
         if ($spuId = $this->insertInto('spu')->field()->values($data)->execute()) {
@@ -214,19 +209,19 @@ class SPU extends \Core\Model
             }
 
             // check desc and add default value
-            $this->_validate->check($data['desc'], [
-                'require' => ['value'],
+            $desc['value'] = $data['desc'];
+            $this->_validate->check($desc, [
                 'default' => ['spu_id' => $spuId, 'type' => 3],
             ]);
             // insert into spu_detail
-            if (!$this->insertInto('spu_detail')->field()->values($data['desc'])->execute()) {
+            if (!$this->insertInto('spu_detail')->field()->values($desc)->execute()) {
                 throw new \Exception('Insert Erro!', 500);
             }
 
             // add sku info
             $sku = new \App\Model\SKU();
-            foreach ($data['skus'] as $sku) {
-                $sku->add($spuId, $sku);
+            foreach ($data['skus'] as $skuInfo) {
+                $sku->add($spuId, $skuInfo);
             }
 
             return ['spu_id' => $spuId];
