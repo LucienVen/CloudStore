@@ -4,11 +4,16 @@ namespace App\Action;
 
 class Media extends \Core\Action
 {
-    public function upload()
+    /**
+     * for spu detail img upload
+     *
+     * @return Response
+     */
+    public function detailFileUpload()
     {
         try {
             $media = new \App\Model\Media;
-            $res = $media->upload(\Core\Config::get('media_path'), $this->_request->getUploadedFiles());
+            $res = $media->detailFileUpload(\Core\Config::get('media_path'), $this->_request->getUploadedFiles());
         } catch(\Exception $e) {
             return $this->error($e->getCode(), $e->getMessage());
         }
