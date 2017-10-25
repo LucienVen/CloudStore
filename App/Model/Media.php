@@ -4,9 +4,13 @@ namespace App\Model;
 
 class Media extends \Core\Model
 {
-    public function upload($files)
+    public function upload($directory, $files)
     {
-        var_dump($files);
+        foreach ($files as $file) {
+            $filename[] = moveUploadedFile($directory, $file);
+        }
+
+        return $filename;
     }
 
     /**
