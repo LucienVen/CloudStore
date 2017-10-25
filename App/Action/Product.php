@@ -2,7 +2,9 @@
 
 namespace App\Action;
 
-class SKU extends \Core\Action
+use \App\Model\SPU;
+
+class Product extends \Core\Action
 {
     /**
      * get product list info
@@ -12,7 +14,8 @@ class SKU extends \Core\Action
     public function simpleInfo()
     {
         try {
-            $res = $this->_model->listProductInfo($this->_request->getQueryParams());
+            $SPU = new SPU;
+            $res = $SPU->list($this->_request->getQueryParams());
         } catch(\Exception $e) {
             return $this->error($e->getCode(), $e->getMessage());
         }
@@ -28,7 +31,8 @@ class SKU extends \Core\Action
     public function detailInfo()
     {
         try {
-            $res = $this->_model->detailInfo($this->_args['spu_id']);
+            $SPU = new SPU;
+            $res = $SPU->detail($this->_args['spu_id']);
         } catch(\Exception $e) {
             return $this->error($e->getCode(), $e->getMessage());
         }
@@ -44,7 +48,8 @@ class SKU extends \Core\Action
     public function searchOptInfo()
     {
         try {
-            $res = $this->_model->searchOptInfo($this->_request->getQueryParams()['cateId1']);
+            $SPU = new SPU;
+            $res = $SPU->searchOpt($this->_request->getQueryParams()['cateId1']);
         } catch(\Exception $e) {
             return $this->error($e->getCode(), $e->getMessage());
         }
@@ -60,7 +65,25 @@ class SKU extends \Core\Action
     public function search()
     {
         try {
-            $res = $this->_model->search($this->_request->getParsedBody());
+            $SPU = new SPU;
+            $res = $SPU->search($this->_request->getParsedBody());
+        } catch(\Exception $e) {
+            return $this->error($e->getCode(), $e->getMessage());
+        }
+
+        return $this->success($res);
+    }
+
+    /**
+     * add new spu/sku info
+     *
+     * @return Response
+     */
+    public function add()
+    {
+        try {
+            $SPU = new SPU;
+            $res = $SPU->add($this->_request->getParsedBody(), $this->_request->getUploadedFiles());
         } catch(\Exception $e) {
             return $this->error($e->getCode(), $e->getMessage());
         }
