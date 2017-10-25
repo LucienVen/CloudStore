@@ -4,13 +4,28 @@ namespace App\Model;
 
 class Media extends \Core\Model
 {
+    /**
+     * upload file.
+     *
+     * @param string      $directory
+     * @param UploadFiles $files
+     *
+     * @return array
+     */
     public function upload($directory, $files)
     {
+        $filedata = [];
         foreach ($files as $file) {
-            $filename[] = moveUploadedFile($directory, $file);
+            if (UPLOAD_ERR_OK != $file->getError()) {
+                throw new \Exception($file->getError(), 500);
+            }
+            $filedata = array_merge($filedata, $this->moveUploadedFile($directory, $file));
         }
 
-        return $filename;
+        $res['errno'] = 0;
+        $res['data'] = $filedata;
+
+        return $res;
     }
 
     /**
@@ -22,15 +37,40 @@ class Media extends \Core\Model
      *
      * @return string filename of moved file
      */
-    public function moveUploadedFile($directory, $uploadedFile)
+    private function moveUploadedFile($directory, $uploadedFile)
     {
         $extension = pathinfo($uploadedFile->getClientFilename(), PATHINFO_EXTENSION);
-        // see http://php.net/manual/en/function.random-bytes.php
+        // random name
         $basename = bin2hex(random_bytes(8));
         $filename = sprintf('%s.%0.8s', $basename, $extension);
+        $filepath = ROOT_PATH.DIRECTORY_SEPARATOR.$directory.DIRECTORY_SEPARATOR.$filename;
+        $fileurl = SERVER_URL.DIRECTORY_SEPARATOR.$directory.DIRECTORY_SEPARATOR.$filename;
 
-        $uploadedFile->moveTo($directory.DIRECTORY_SEPARATOR.$filename);
+        $uploadedFile->moveTo($filepath);
+        $res = $this->saveTo(['path' => $filepath, 'url_path' => $fileurl, 'type' => 0]);
 
-        return $filename;
+        return [$res['id'] => $res['url_path']];
+    }
+
+    /**
+     * save file path info to database
+     *
+     * @param array $data
+     * @return array
+     */
+    public function saveTo($data)
+    {
+        $this->_validate->check($data, [
+            'require' => ['path', 'url_path', 'type'],
+            'choose' => ['type' => '0,1,2'],
+            'autotime' => 'create_time',
+            'autoupdate' => 'update_time',
+        ]);
+
+        if ($mediaId = $this->insertInto('media')->field()->values($data)->execute()) {
+            return $this->from('media')->where(['id' => $mediaId])->fetch();
+        }
+
+        throw new \Exception('Upload File Error!', 500);
     }
 }
