@@ -579,3 +579,26 @@ response: 与**GET**方法相同
 
 ---
 
+### **POST** `/media/desc` SPU 详情信息图片上传
+
+---
+
+### **POST** `/product` 添加 SPU 信息
+
+data:
+
+```json
+{
+    'cate_id': 101000,
+    'name': "test",
+    'brand': "test",
+    'show_price': 12,00,
+    'service': "1,2,3",
+    'desc': [
+        "value": ""
+    ]
+}
+```
+
+---
+
