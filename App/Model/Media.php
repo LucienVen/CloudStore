@@ -12,14 +12,14 @@ class Media extends \Core\Model
      *
      * @return array
      */
-    public function upload($directory, $files)
+    public function detailFileUpload($directory, $files)
     {
         $filedata = [];
         foreach ($files as $file) {
             if (UPLOAD_ERR_OK != $file->getError()) {
                 throw new \Exception($file->getError(), 500);
             }
-            $filedata = array_merge($filedata, $this->moveUploadedFile($directory, $file));
+            $filedata = array_merge($filedata, $this->upload($directory, $file));
         }
 
         $res['errno'] = 0;
@@ -37,7 +37,7 @@ class Media extends \Core\Model
      *
      * @return string filename of moved file
      */
-    private function moveUploadedFile($directory, $uploadedFile)
+    public function upload($directory, $uploadedFile)
     {
         $extension = pathinfo($uploadedFile->getClientFilename(), PATHINFO_EXTENSION);
         // random name
@@ -58,7 +58,7 @@ class Media extends \Core\Model
      * @param array $data
      * @return array
      */
-    public function saveTo($data)
+    private function saveTo($data)
     {
         $this->_validate->check($data, [
             'require' => ['path', 'url_path', 'type'],
