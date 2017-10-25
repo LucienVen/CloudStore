@@ -1,5 +1,5 @@
 <?php
 
 $app->group('/media', function () {
-    $this->post('/desc', "\App\Action\Media:detailFileUpload");
+    $this->post('', "\App\Action\Media:detailFileUpload");
 });

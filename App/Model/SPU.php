@@ -185,37 +185,51 @@ class SPU extends \Core\Model
     }
 
     /**
-     * add new SPU info
+     * add new SPU info.
      *
      * @param array $data
+     *
      * @return array
      */
     public function add($data, $files)
     {
         $this->_valiadte->check($data, [
-            'require' => ['cate_id', 'name', 'brand', 'show_price', 'service', 'desc'],
+            'require' => ['cate_id', 'name', 'brand', 'show_price', 'service', 'desc', 'skus', 'cover_url', 'media_id'],
             'choose' => ['is_hot_sale' => '0,1', 'is_recommd' => '0,1'],
             'default' => ['is_delete' => 0],
             'autotime' => 'create_time',
-            'autoupdate' => 'update_time'
+            'autoupdate' => 'update_time',
         ]);
 
         // upload file
-        $media = new \App\Model\Media;
-        foreach ($files as $file) {
-            $info = $media->upload(\Core\Config::get('media_path'), $files);
-        }
-        $data['cover_url'] = $info['url_path'];
+        $media = new \App\Model\Media();
+        $info = $media->detailFileUpload(\Core\Config::get('media_path'), $files);
+        $data['cover_url'] = current($info['data']);
 
+        // insert into spu
         if ($spuId = $this->insertInto('spu')->field()->values($data)->execute()) {
+            // change pic info
+            if (!$this->update('media')->set(['spu_id' => $spuId])->where(['id' => $data['media_id']])->execute()) {
+                throw new \Exception('Update Error!', 500);
+            }
+
             // check desc and add default value
             $this->_validate->check($data['desc'], [
                 'require' => ['value'],
-                'default' => ['spu_id' => $spuId, 'type' => 3]
+                'default' => ['spu_id' => $spuId, 'type' => 3],
             ]);
-            if ($this->insertInto('spu_detail')->field()->values($data['desc'])->execute()) {
-                return ['spu_id' => $spuId];
+            // insert into spu_detail
+            if (!$this->insertInto('spu_detail')->field()->values($data['desc'])->execute()) {
+                throw new \Exception('Insert Erro!', 500);
             }
+
+            // add sku info
+            $sku = new \App\Model\SKU();
+            foreach ($data['skus'] as $sku) {
+                $sku->add($spuId, $sku);
+            }
+
+            return ['spu_id' => $spuId];
         }
 
         throw new \Exception('Insert Erro!', 500);
