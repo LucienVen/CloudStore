@@ -57,7 +57,7 @@ class SKU extends \Core\Model
     public function info($skuId)
     {
         if ($sku = $this->from('sku')->where(['id' => $skuId, 'is_delete' => 0])->fetch()) {
-            if ($sku['attribute'] = $this->from('sku_attr')->where(['sku_id' => $skuId, 'is_delete' => 0])->fetchAll()) {
+            if ($sku['attribute'] = $this->from('sku_attr')->where(['sku_id' => $skuId])->fetchAll()) {
                 return $sku;
             }
         }
