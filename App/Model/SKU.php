@@ -102,8 +102,11 @@ class SKU extends \Core\Model
      */
     public function deleteInfo($skuId)
     {
-        $this->update('sku')->set(['is_delete' => 1])->where(['id' => $skuId])->fetch();
+        if ($this->update('sku')->set(['is_delete' => 1])->where(['id' => $skuId])->fetch())
+        {
+            return true;
+        }
 
-        return true;
+        throw new \Exception("Delete Error!", 500);
     }
 }

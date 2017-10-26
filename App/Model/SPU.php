@@ -274,9 +274,12 @@ class SPU extends \Core\Model
      */
     public function deleteInfo($spuId)
     {
-        $this->update('spu')->set(['is_delete' => 0])->where(['id' => $spuId])->execute();
-        $this->update('sku')->set(['is_delete' => 0])->where(['spu_id' => $spuId])->execute();
+        if ($this->update('spu')->set(['is_delete' => 1])->where(['id' => $spuId])->execute()) {
+            if ($this->update('sku')->set(['is_delete' => 1])->where(['spu_id' => $spuId])->execute()) {
+                return true;
+            }
+        }
 
-        return true;
+        throw new \Exception("Delete Error!", 500);
     }
 }
