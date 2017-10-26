@@ -64,4 +64,29 @@ class SKU extends \Core\Model
 
         throw new \Exception("Don't Exists!", 404);
     }
+
+    /**
+     * update sku's info
+     *
+     * @param int $skuId
+     * @param array $data
+     * @return boolean
+     */
+    public function updateInfo($skuId, $data)
+    {
+        $this->_validate->check($data, [
+            'autoupdate' => 'update_time'
+        ]);
+
+        if ($this->from('sku')->where(['id' => $skuId])->fetch()) {
+            $this->update('sku')->field()->set($data)->where(['id' => $skuId])->execute();
+            if (isset($data['attribute']) && !is_null($data['attribute'])) {
+                $this->update('sku')->field()->set($data['attribute'])->where(['sku_id' => $skuId])->execute();
+
+                return true;
+            }
+        }
+
+        throw new \Exception("Update Error!", 500);
+    }
 }

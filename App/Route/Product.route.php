@@ -9,7 +9,7 @@ $app->group('/product', function() {
 });
 
 $app->group('/product/sku', function () {
-    $this->post('/{spu_id}', "\App\Action\Product:addSKU");
+    $this->patch('/{sku_id}', "\App\Action\Product:updateSKU");
 // })->add("\App\Action\User:checkRoot");
 });
 

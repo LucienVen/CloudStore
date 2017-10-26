@@ -114,11 +114,11 @@ class Product extends \Core\Action
      *
      * @return Response
      */
-    public function addSKU()
+    public function updateSKU()
     {
         try {
             $SKU = new SKU;
-            $res = $SKU->add($this->_args['spu_id'], $this->_request->getParsedBody());
+            $res = $SKU->updateInfo($this->_args['sku_id'], $this->_request->getParsedBody());
         } catch(\Exception $e) {
             return $this->error($e->getCode(), $e->getMessage());
         }
