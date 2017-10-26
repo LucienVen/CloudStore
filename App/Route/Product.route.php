@@ -11,12 +11,13 @@ $app->group('/product', function() {
 $app->group('/product/sku', function () {
     $this->patch('/{sku_id}', "\App\Action\Product:updateSKU");
     $this->delete('/{sku_id}', "\App\Action\Product:deleteSKU");
-// })->add("\App\Action\User:checkRoot");
-});
+})->add("\App\Action\User:checkRoot");
+// });
 
 $app->group('/product/spu', function () {
     $this->post('', "\App\Action\Product:add");
+    $this->post('/{spu_id}', "\App\Action\Product:addSKU");
     $this->patch('/{spu_id}', "\App\Action\Product:updateSPU");
     $this->delete('/{spu_id}', "\App\Action\Product:deleteSPU");
-// })->add("\App\Action\User:checkRoot");
-});
+})->add("\App\Action\User:checkRoot");
+// });
