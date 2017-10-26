@@ -1,6 +1,8 @@
-### GET方法通用参数
+## GET方法通用参数
 
 查询起始值`offset`、每页个数 `limit`
+
+## `/user    /auth`
 
 ### **POST** `/auth` 登录
 
@@ -96,6 +98,8 @@ response:
 
 ---
 
+## `/address`
+
 ### **GET** `/address` 获取地址信息
 
 response:
@@ -166,6 +170,8 @@ response:
 ```
 
 ---
+
+## `/orders`
 
 ### **GET** `/orders[/{order_id}]` 获取订单信息
 
@@ -319,6 +325,8 @@ response:
 
 ---
 
+## `/product`
+
 ### **GET** `/product` 获取产品信息
 
 **params**: **(must)**`type:hot,suggest` 获取热门商品、推荐商品
@@ -427,6 +435,40 @@ response:
 
 ---
 
+### **POST** `/product` 添加 SPU 信息
+
+data:
+
+```json
+{
+    'cate_id': 101000,
+    'name': "test",
+    'brand': "test",
+    'show_price': 12,00,
+    'service': "1,2,3",
+    'desc': [
+        "value": ""
+    ],
+    'sku': [{
+        'price': 123.00,
+        'original_price': 233.00,
+        'stock': 123,
+        'attribute': {
+            'attr': 'color',
+            'opt': 'red'
+        }
+    }]
+}
+```
+
+response:
+
+```json
+{'spu_id': 123123}
+```
+
+----
+
 ### **GET** `/product/search` 获取搜索选项信息
 
 **param**: **(must)** `cateId1` 一级分类id
@@ -522,6 +564,8 @@ response:
 
 ---
 
+## `/cart`
+
 ### **GET** `/cart` 获取购物车信息
 
 response:
@@ -602,26 +646,9 @@ response: 与**GET**方法相同
 
 ---
 
+## `/media`
+
 ### **POST** `/media/desc` SPU 详情信息图片上传
-
----
-
-### **POST** `/product` 添加 SPU 信息
-
-data:
-
-```json
-{
-    'cate_id': 101000,
-    'name': "test",
-    'brand': "test",
-    'show_price': 12,00,
-    'service': "1,2,3",
-    'desc': [
-        "value": ""
-    ]
-}
-```
 
 ---
 
