@@ -25,7 +25,7 @@ class Address extends \Core\Model
             return $res;
         }
 
-        throw new Exception("Address Dont't Exist!", 404);
+        throw new \Exception("Address Dont't Exist!", 404);
     }
 
     /**
@@ -53,7 +53,7 @@ class Address extends \Core\Model
             return $info;
         }
 
-        throw new Exception("Add Error!", 500);
+        throw new \Exception("Add Error!", 500);
     }
 
     /**
@@ -74,7 +74,7 @@ class Address extends \Core\Model
             return $this->from()->where(['id' => $address_id, 'is_delete' => 0])->fetch();
         }
 
-        throw new Exception("Update Error!", 500);
+        throw new \Exception("Update Error!", 500);
     }
 
     /**
@@ -89,6 +89,6 @@ class Address extends \Core\Model
             return "Delete Success!";
         }
 
-        throw new Exception("Delete Error!", 500);
+        throw new \Exception("Delete Error!", 500);
     }
 }
