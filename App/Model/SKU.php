@@ -46,4 +46,25 @@ class SKU extends \Core\Model
 
         throw new \Exception('Insert Error!', 500);
     }
+
+    /**
+     * get one sku's attr.
+     *
+     * @param int $skuId
+     *
+     * @return array|null
+     */
+    public function getAttr($skuId)
+    {
+        if (!$this->from('sku')->where(['id' => $skuId])->fetch()) {
+            throw new \Exception("Don't Exists!", 404);
+        }
+
+        $attr = $this->from('sku_attr')->where(['sku_id' => $skuId])->fetchAll();
+        if (!$attr) {
+            throw new \Exception("Don't Exists!", 404);
+        }
+
+        return $attr;
+    }
 }

@@ -404,6 +404,29 @@ response:
 
 ---
 
+### **GET** `/product/sku/{sku_id}` 搜索某个 sku 的属性
+
+response:
+
+```json
+[
+    {
+        "id": "141",
+        "sku_id": "9976088",
+        "attr": "操作系统",
+        "opt": "安卓版"
+    },
+    {
+        "id": "142",
+        "sku_id": "9976088",
+        "attr": "颜色",
+        "opt": "黑色"
+    }
+]
+```
+
+---
+
 ### **GET** `/product/search` 获取搜索选项信息
 
 **param**: **(must)** `cateId1` 一级分类id

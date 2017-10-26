@@ -3,6 +3,7 @@
 namespace App\Action;
 
 use \App\Model\SPU;
+use \App\Model\SKU;
 
 class Product extends \Core\Action
 {
@@ -84,6 +85,23 @@ class Product extends \Core\Action
         try {
             $SPU = new SPU;
             $res = $SPU->add($this->_request->getParsedBody(), $this->_request->getUploadedFiles());
+        } catch(\Exception $e) {
+            return $this->error($e->getCode(), $e->getMessage());
+        }
+
+        return $this->success($res);
+    }
+
+    /**
+     * get sku's attribute
+     *
+     * @return Response
+     */
+    public function getSKUAttr()
+    {
+        try {
+            $SKU = new SKU;
+            $res = $SKU->getAttr($this->_args['sku_id']);
         } catch(\Exception $e) {
             return $this->error($e->getCode(), $e->getMessage());
         }

@@ -24,8 +24,10 @@ class User extends \Core\Model
      */
     public function login($data)
     {
-        // check
-        $this->_validate->check($data);
+        if ($data['phone'] != 'root') {
+            // check
+            $this->_validate->check($data);
+        }
 
         // find data in database
         if ($res = $this->from()->where(['phone' => $data['phone'], 'is_delete' => 0])->fetch()) {
