@@ -97,11 +97,11 @@ class Product extends \Core\Action
      *
      * @return Response
      */
-    public function getSKUAttr()
+    public function info()
     {
         try {
             $SKU = new SKU;
-            $res = $SKU->getAttr($this->_args['sku_id']);
+            $res = $SKU->info($this->_args['sku_id']);
         } catch(\Exception $e) {
             return $this->error($e->getCode(), $e->getMessage());
         }

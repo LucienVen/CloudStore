@@ -9,5 +9,6 @@ $app->group('/product', function() {
 
 $app->group('/product', function () {
     $this->post('', "\App\Action\Product:add");
+    $this->get('/sku/{sku_id}', "\App\Action\Product:info");
 // })->add("\App\Action\User:checkRoot");
 });

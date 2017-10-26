@@ -54,17 +54,14 @@ class SKU extends \Core\Model
      *
      * @return array|null
      */
-    public function getAttr($skuId)
+    public function info($skuId)
     {
-        if (!$this->from('sku')->where(['id' => $skuId])->fetch()) {
-            throw new \Exception("Don't Exists!", 404);
+        if ($sku = $this->from('sku')->where(['id' => $skuId])->fetch()) {
+            if ($sku['attribute'] = $this->from('sku_attr')->where(['sku_id' => $skuId])->fetchAll()) {
+                return $sku;
+            }
         }
 
-        $attr = $this->from('sku_attr')->where(['sku_id' => $skuId])->fetchAll();
-        if (!$attr) {
-            throw new \Exception("Don't Exists!", 404);
-        }
-
-        return $attr;
+        throw new \Exception("Don't Exists!", 404);
     }
 }
