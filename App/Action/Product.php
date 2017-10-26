@@ -125,4 +125,55 @@ class Product extends \Core\Action
 
         return $this->success($res);
     }
+
+    /**
+     * update spu info
+     *
+     * @return Response
+     */
+    public function updateSPU()
+    {
+        try {
+            $SPU = new SPU;
+            $res = $SPU->updateInfo($this->_args['spu_id'], $this->_request->getParsedBody());
+        } catch(\Exception $e) {
+            return $this->error($e->getCode(), $e->getMessage());
+        }
+
+        return $this->success($res);
+    }
+
+    /**
+     * delete sku info
+     *
+     * @return Response
+     */
+    public function deleteSKU()
+    {
+        try {
+            $SKU = new SKU;
+            $res = $SKU->deleteInfo($this->_args['sku_id']);
+        } catch(\Exception $e) {
+            return $this->error($e->getCode(), $e->getMessage());
+        }
+
+        return $this->success($res);
+    }
+
+    /**
+     * delete spu info
+     *
+     * @return Response
+     */
+    public function deleteSPU()
+    {
+        try {
+            $SPU = new SPU;
+            $res = $SPU->deleteInfo($this->_args['spu_id']);
+        } catch(\Exception $e) {
+            return $this->error($e->getCode(), $e->getMessage());
+        }
+
+        return $this->success($res);
+    }
 }

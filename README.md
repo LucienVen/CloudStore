@@ -412,7 +412,15 @@ response:
 
 ---
 
-### **GET** `/product/sku/{sku_id}` 搜索某个 sku 的属性
+### **PATH** `/product/sku/{sku_id}` 修改 sku 信息
+
+---
+
+### **DELETE** `/product/sku/{sku_id}` 删除 sku 信息
+
+---
+
+### **GET** `/product/sku/{sku_id}` 搜索 sku 信息
 
 response:
 
@@ -468,6 +476,14 @@ response:
 ```
 
 ----
+
+### **PATCH** `/product/spu/{spu_id}` 修改 spu 信息
+
+---
+
+### **DELETE** `/product/spu/{spu_id}` 删除 spu 信息
+
+---
 
 ### **GET** `/product/search` 获取搜索选项信息
 

@@ -229,4 +229,54 @@ class SPU extends \Core\Model
 
         throw new \Exception('Insert Erro!', 500);
     }
+
+    /**
+     * update spu info
+     *
+     * @param int $spuId
+     * @param array $data
+     * @return boolean
+     */
+    public function updateInfo($spuId, $data)
+    {
+        $this->_validate->check($data, [
+            'autoupdate' => 'update_time',
+        ]);
+
+        // spu exist
+        if ($this->from('spu')->where(['id' => $spuId, 'is_delete' => 0])->fetch()) {
+            // add new pic
+            if (isset($data['cover_url']) && !is_null($data['cover_url'])) {
+                $this->_validate->check($data, [
+                    'require' => ['cover_url', 'media_id']
+                ]);
+
+                // change pic info
+                if (!$this->update('media')->set(['spu_id' => $spuId])->where(['id' => $data['media_id']])->execute()) {
+                    // update spu
+                    $this->update('spu')->field()->set($data)->where(['id' => $spuId, 'is_delete' => 0])->execute();
+
+                    return true;
+                }
+            }
+
+            throw new \Exception("Update Error!", 500);
+        }
+
+        throw new \Exception("SPU Don't Exist!", 500);
+    }
+
+    /**
+     * delete spu/sku info
+     *
+     * @param int $spuId
+     * @return boolean
+     */
+    public function deleteInfo($spuId)
+    {
+        $this->update('spu')->set(['is_delete' => 0])->where(['id' => $spuId])->execute();
+        $this->update('sku')->set(['is_delete' => 0])->where(['spu_id' => $spuId])->execute();
+
+        return true;
+    }
 }

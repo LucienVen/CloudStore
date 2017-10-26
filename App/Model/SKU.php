@@ -38,8 +38,8 @@ class SKU extends \Core\Model
             }
 
             // get sku detail info
-            $skuInfo = $this->from('sku')->where(['id' => $skuId])->fetch();
-            $skuInfo['attribute'] = $this->from('sku_attr')->where(['sku_id' => $skuId])->fetchAll();
+            $skuInfo = $this->from('sku')->where(['id' => $skuId, 'is_delete' => 0])->fetch();
+            $skuInfo['attribute'] = $this->from('sku_attr')->where(['sku_id' => $skuId, 'is_delete' => 0])->fetchAll();
 
             return $skuInfo;
         }
@@ -56,8 +56,8 @@ class SKU extends \Core\Model
      */
     public function info($skuId)
     {
-        if ($sku = $this->from('sku')->where(['id' => $skuId])->fetch()) {
-            if ($sku['attribute'] = $this->from('sku_attr')->where(['sku_id' => $skuId])->fetchAll()) {
+        if ($sku = $this->from('sku')->where(['id' => $skuId, 'is_delete' => 0])->fetch()) {
+            if ($sku['attribute'] = $this->from('sku_attr')->where(['sku_id' => $skuId, 'is_delete' => 0])->fetchAll()) {
                 return $sku;
             }
         }
@@ -78,15 +78,32 @@ class SKU extends \Core\Model
             'autoupdate' => 'update_time'
         ]);
 
-        if ($this->from('sku')->where(['id' => $skuId])->fetch()) {
-            $this->update('sku')->field()->set($data)->where(['id' => $skuId])->execute();
+        // sku exist
+        if ($this->from('sku')->where(['id' => $skuId, 'is_delete' => 0])->fetch()) {
+            // update sku
+            $this->update('sku')->field()->set($data)->where(['id' => $skuId, 'is_delete' => 0])->execute();
+            // update sku_attr
             if (isset($data['attribute']) && !is_null($data['attribute'])) {
-                $this->update('sku')->field()->set($data['attribute'])->where(['sku_id' => $skuId])->execute();
+                $this->update('sku_attr')->field()->set($data['attribute'])->where(['sku_id' => $skuId, 'is_delete' => 0])->execute();
 
                 return true;
             }
+            throw new \Exception("Update Error!", 500);
         }
 
-        throw new \Exception("Update Error!", 500);
+        throw new \Exception("SKU Don't Exist!", 500);
+    }
+
+    /**
+     * delete sku info
+     *
+     * @param int $skuId
+     * @return boolean
+     */
+    public function deleteInfo($skuId)
+    {
+        $this->update('sku')->set(['is_delete' => 1])->where(['id' => $skuId])->fetch();
+
+        return true;
     }
 }
