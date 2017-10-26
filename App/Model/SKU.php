@@ -39,7 +39,7 @@ class SKU extends \Core\Model
 
             // get sku detail info
             $skuInfo = $this->from('sku')->where(['id' => $skuId, 'is_delete' => 0])->fetch();
-            $skuInfo['attribute'] = $this->from('sku_attr')->where(['sku_id' => $skuId, 'is_delete' => 0])->fetchAll();
+            $skuInfo['attribute'] = $this->from('sku_attr')->where(['sku_id' => $skuId])->fetchAll();
 
             return $skuInfo;
         }
@@ -85,7 +85,7 @@ class SKU extends \Core\Model
             $this->update('sku')->field()->set($data)->where(['id' => $skuId, 'is_delete' => 0])->execute();
             // update sku_attr
             if (isset($data['attribute']) && !is_null($data['attribute'])) {
-                $this->update('sku_attr')->field()->set($data['attribute'])->where(['sku_id' => $skuId, 'is_delete' => 0])->execute();
+                $this->update('sku_attr')->field()->set($data['attribute'])->where(['sku_id' => $skuId])->execute();
 
                 return true;
             }
