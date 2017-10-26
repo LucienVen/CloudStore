@@ -5,10 +5,15 @@ $app->group('/product', function() {
     $this->get('/search', "\App\Action\Product:searchOptInfo");
     $this->post('/search', "\App\Action\Product:search");
     $this->get('/{spu_id}', "\App\Action\Product:detailInfo");
+    $this->get('/sku/{sku_id}', "\App\Action\Product:info");
 });
 
-$app->group('/product', function () {
+$app->group('/product/sku', function () {
+    $this->post('/{spu_id}', "\App\Action\Product:addSKU");
+// })->add("\App\Action\User:checkRoot");
+});
+
+$app->group('/product/spu', function () {
     $this->post('', "\App\Action\Product:add");
-    $this->get('/sku/{sku_id}', "\App\Action\Product:info");
 // })->add("\App\Action\User:checkRoot");
 });

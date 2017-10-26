@@ -136,7 +136,7 @@ class Orders extends \Core\Model
         if (is_array($data)) {
             foreach ($data as $cart_id) {
                 $sku = $this->from('cart')
-                        ->where(['id' => $cart_id, 'is_delete' => 0])
+                        ->where(['id' => $cart_id['id'], 'is_delete' => 0])
                         ->select(null)
                         ->select(['sku_id', 'num', 'price', 'name'])
                         ->fetch();
@@ -152,7 +152,7 @@ class Orders extends \Core\Model
         } else {
             $sku = $this->from('sku')
                     ->leftJoin('spu ON sku.spu_id = spu.id')
-                    ->where(['sku.id' => $data['sku_id'], 'is_delete' => 0])
+                    ->where(['id' => $data['sku_id'], 'is_delete' => 0])
                     ->select(null)
                     ->select(['sku.id as sku_id', 'sku.price', 'spu.name'])
                     ->fetch();
@@ -186,13 +186,6 @@ class Orders extends \Core\Model
             'autotime' => 'create_time',
             'autoupdate' => 'update_time',
         ])->check($data);
-
-        // check order_items field
-        foreach ($data['cart_ids'] as $sku) {
-            $this->_validate->check($sku, [
-                'require' => ['id'],
-            ]);
-        }
 
         // check address info
         if (!$this->from('address')->where(['id' => $data['address_id']])->fetch()) {

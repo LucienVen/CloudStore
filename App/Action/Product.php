@@ -108,4 +108,21 @@ class Product extends \Core\Action
 
         return $this->success($res);
     }
+
+    /**
+     * add new sku
+     *
+     * @return Response
+     */
+    public function addSKU()
+    {
+        try {
+            $SKU = new SKU;
+            $res = $SKU->add($this->_args['spu_id'], $this->_request->getParsedBody());
+        } catch(\Exception $e) {
+            return $this->error($e->getCode(), $e->getMessage());
+        }
+
+        return $this->success($res);
+    }
 }
