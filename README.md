@@ -412,6 +412,48 @@ response:
 
 ---
 
+### **POST** `/product/sku/{spu_id}` 添加 sku 信息
+
+data:
+
+```json
+{
+  'price': 123.00,
+  'original_price': 233.00,
+  'stock': 123,
+  'attribute': {
+    'attr': 'color',
+    'opt': 'red'
+}
+```
+
+response:
+
+```json
+{
+  "id": "5854051",
+  "spu_id": "5853054",
+  "price": "99.00",
+  "stock": "295",
+  "sold": "8906",
+  "original_price": "119.00",
+  "is_delete": "0",
+  "create_time": null,
+  "update_time": null,
+  "status": "1",
+  "attribute": [
+    {
+      "id": "70",
+      "sku_id": "5854051",
+      "attr": "颜色",
+      "opt": "网易红"
+    }
+  ]
+}
+```
+
+---
+
 ### **PATH** `/product/sku/{sku_id}` 修改 sku 信息
 
 ---
