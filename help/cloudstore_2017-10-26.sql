@@ -7,7 +7,7 @@
 #
 # Host: 127.0.0.1 (MySQL 5.7.19)
 # Database: cloudstore
-# Generation Time: 2017-10-25 06:32:20 +0000
+# Generation Time: 2017-10-26 01:28:08 +0000
 # ************************************************************
 
 
@@ -689,7 +689,8 @@ VALUES
 	(549,6487063,NULL,'http://p4.music.126.net/XyBu4YVmffNvHqJGe5Y2sg==/109951162973029634.jpg',0,NULL,NULL,NULL),
 	(550,6489067,NULL,'http://p3.music.126.net/08CZtCqN25nNngX-K-U-tg==/18771962023049330.jpg',0,NULL,NULL,NULL),
 	(551,6489067,NULL,'http://p3.music.126.net/pLo-BVuNkG2IhpI9ecicOw==/18910500486436208.jpg',0,NULL,NULL,NULL),
-	(552,6489067,NULL,'http://p4.music.126.net/CeYmr0ZmACGY1d0whfxFWA==/109951162973031631.jpg',0,NULL,NULL,NULL);
+	(552,6489067,NULL,'http://p4.music.126.net/CeYmr0ZmACGY1d0whfxFWA==/109951162973031631.jpg',0,NULL,NULL,NULL),
+	(555,NULL,'/Users/yven/Dropbox/Workspace/www/CloudStore_API/uploads/fb4252cfe4411810.png','http://localhost:1234/CloudStore_API/uploads/fb4252cfe4411810.png',0,1508943067,1508943067,NULL);
 
 /*!40000 ALTER TABLE `media` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -1520,7 +1521,7 @@ DROP TABLE IF EXISTS `spu_detail`;
 CREATE TABLE `spu_detail` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `spu_id` int(11) NOT NULL,
-  `type` tinyint(3) NOT NULL COMMENT '详情内容记录，1-文字，2-图片',
+  `type` tinyint(3) NOT NULL COMMENT '详情内容记录，1-文字，2-图片、3-全部',
   `value` varchar(255) DEFAULT NULL COMMENT '内容',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -3709,7 +3710,7 @@ DROP TABLE IF EXISTS `user`;
 
 CREATE TABLE `user` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `phone` varchar(11) NOT NULL DEFAULT '',
+  `phone` varchar(255) NOT NULL DEFAULT '',
   `username` varchar(30) NOT NULL DEFAULT '' COMMENT '用户名',
   `password` varchar(255) NOT NULL DEFAULT '',
   `is_root` tinyint(3) NOT NULL DEFAULT '0' COMMENT '是否管理员用户，1-是，0-否，默认为0',
@@ -3725,7 +3726,8 @@ LOCK TABLES `user` WRITE;
 
 INSERT INTO `user` (`id`, `phone`, `username`, `password`, `is_root`, `is_delete`, `create_time`, `update_time`, `status`)
 VALUES
-	(1,'15625504195','cloud_15625504195','$2y$10$rNZt36kesQtbiCZByeGhMuoM6wHqUvm8tXxgDXgEctIWYI8/u89La',1,0,1507878862,1507878862,1),
+	(0,'root','ThisIsSuperMan','$2y$10$ScxRh5nG5uLjiRlQlgdFs.a6HVNmQEuNrgD8YnVJi4D62H6/JWB8S',1,0,1508981118,1508981118,1),
+	(1,'15625504195','cloud_15625504195','$2y$10$rNZt36kesQtbiCZByeGhMuoM6wHqUvm8tXxgDXgEctIWYI8/u89La',0,0,1507878862,1507878862,1),
 	(2,'13631784814','YvenChang','$2y$10$sRJt/nxujqPulevJd9zfQ.U2wzX7fKA780rQ5Xjx8UfvC7/dESkz.',0,0,1507885406,1507959422,1),
 	(3,'12312341234','cloud_12312341234','$2y$10$UxzvyeVGGXEv2PTHlpq.Meiv8h./VIDaQRuLJkc4RUMPpe3XNYiha',0,0,1507954607,1507954607,1);
 
@@ -3753,7 +3755,8 @@ LOCK TABLES `user_detail` WRITE;
 INSERT INTO `user_detail` (`id`, `uid`, `email`, `avater_id`, `status`)
 VALUES
 	(1,2,'chenyifan.gg@qq.com',1,1),
-	(2,3,NULL,1,1);
+	(2,3,'123@qq.com',1,1),
+	(3,1,'yvenchang@163.com',1,1);
 
 /*!40000 ALTER TABLE `user_detail` ENABLE KEYS */;
 UNLOCK TABLES;

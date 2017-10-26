@@ -10,7 +10,7 @@ return [
     'db' => [
         'host' => '127.0.0.1',
         'user' => 'root',
-        'pass' => '123456',
+        'pass' => '0212',
         'dbname' => 'cloudstore',
         'prefix' => '',
     ],
