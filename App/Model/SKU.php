@@ -66,16 +66,17 @@ class SKU extends \Core\Model
     }
 
     /**
-     * update sku's info
+     * update sku's info.
      *
-     * @param int $skuId
+     * @param int   $skuId
      * @param array $data
-     * @return boolean
+     *
+     * @return bool
      */
     public function updateInfo($skuId, $data)
     {
         $this->_validate->check($data, [
-            'autoupdate' => 'update_time'
+            'autoupdate' => 'update_time',
         ]);
 
         // sku exist
@@ -88,25 +89,25 @@ class SKU extends \Core\Model
 
                 return true;
             }
-            throw new \Exception("Update Error!", 500);
+            throw new \Exception('Update Error!', 500);
         }
 
         throw new \Exception("SKU Don't Exist!", 500);
     }
 
     /**
-     * delete sku info
+     * delete sku info.
      *
      * @param int $skuId
-     * @return boolean
+     *
+     * @return bool
      */
     public function deleteInfo($skuId)
     {
-        if ($this->update('sku')->set(['is_delete' => 1])->where(['id' => $skuId])->fetch())
-        {
+        if ($this->update('sku')->set(['is_delete' => 1])->where(['id' => $skuId])->execute()) {
             return true;
         }
 
-        throw new \Exception("Delete Error!", 500);
+        throw new \Exception('Delete Error!', 500);
     }
 }
