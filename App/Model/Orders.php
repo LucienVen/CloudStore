@@ -43,17 +43,20 @@ class Orders extends \Core\Model
         $offset = (!isset($param['offset']) || $param['offset'] < 0) ? 0 : $param['offset'];
         $limit = (!isset($param['limit']) || $param['limit'] <= 0) ? \Core\Config::get('page_limit') : $param['limit'];
 
+        // get all order info by super man
+        $where = ['is_delete' => 0, 'status' => [0, 1, 2]];
+        if ($uid != 0) {
+            $where += ['upload_uid' => $uid];
+        }
+        // var_dump($where);
+
         // get all orders
-        if ($orders = $this->from()
-                    ->where(['upload_uid' => $uid, 'is_delete' => 0, 'status' => [0, 1, 2]])
-                    ->limit($limit)
-                    ->offset($offset)
-                    ->fetchAll()) {
+        if ($orders = $this->from()->where($where)->limit($limit)->offset($offset)->fetchAll()) {
             $res = $orders;
             // all order detail
             foreach ($orders as $k => $order) {
                 if ($orders_detail = $this->from('orders_items')->where(['order_id' => $order['id']])->fetchAll()) {
-                    $res[$k]['items'] = $order_detail;
+                    $res[$k]['items'] = $orders_detail;
                 }
             }
 
@@ -116,11 +119,12 @@ class Orders extends \Core\Model
      * set pay limit to system check
      * TODO.
      *
+     * @param int $order_num
      * @param int $pay_limit
      */
-    private function setPayLimit($pay_limit)
+    private function setPayLimit($order_num, $pay_limit)
     {
-        $_SESSION['pay_limit'] = $pay_limit;
+        $_SESSION['pay'] = [$order_num, $pay_limit];
     }
 
     /**
@@ -216,7 +220,7 @@ class Orders extends \Core\Model
                 $res['pay_url'] = $this->createPay($data);
 
                 // set pay limit
-                $this->setPayLimit($res['pay_limit']);
+                $this->setPayLimit($res['order_number'], $res['pay_limit']);
 
                 return $res;
             }
@@ -303,7 +307,8 @@ class Orders extends \Core\Model
             ->select(null)
             ->select(['id', 'number as order_number', 'upload_uid', 'total_price', 'payment', 'trade_id', 'payment_status'])
             ->fetch()) {
-            $res['pay_limit'] = isset($_SESSION['pay_limit']) ? $_SESSION['pay_limit'] : 0;
+            $res['pay_limit'] = isset($_SESSION['pay'][$res['order_number']]) ? $_SESSION['pay'][$res['order_number']] : 0;
+
             return $res;
         }
 
