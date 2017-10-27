@@ -17,7 +17,7 @@ class Orders extends \Core\Model
      */
     public function info($order_id)
     {
-        if ($order = $this->from()->where(['id' => $order_id, 'is_delete' => 0, 'status' => [0, 1, 2]])->fetch()) {
+        if ($order = $this->from('orders')->where(['id' => $order_id, 'is_delete' => 0, 'status' => [0, 1, 2]])->fetch()) {
             $res = $order;
             // get order_items detail
             if ($order_detail = $this->from('orders_items')->where(['order_id' => $order_id])->fetchAll()) {
@@ -51,7 +51,7 @@ class Orders extends \Core\Model
         // var_dump($where);
 
         // get all orders
-        if ($orders = $this->from()->where($where)->limit($limit)->offset($offset)->fetchAll()) {
+        if ($orders = $this->from('orders')->where($where)->limit($limit)->offset($offset)->fetchAll()) {
             $res = $orders;
             // all order detail
             foreach ($orders as $k => $order) {
@@ -200,7 +200,7 @@ class Orders extends \Core\Model
         $data['number'] = $this->createOrderNum();
 
         // insert data
-        if ($order_id = $this->insertInto()->field()->values($data)->execute()) {
+        if ($order_id = $this->insertInto('orders')->field()->values($data)->execute()) {
             // change shopcart status
             if ($data['cart']) {
                 $sku_id = $data['cart_ids'];
@@ -287,7 +287,7 @@ class Orders extends \Core\Model
             'require' => ['express_id', 'express_status'],
         ])->check($data);
 
-        if ($this->update()->field()->set($data)->where(['id' => $order_id])->execute()) {
+        if ($this->update('orders')->field()->set($data)->where(['id' => $order_id])->execute()) {
             return true;
         }
 
@@ -324,7 +324,7 @@ class Orders extends \Core\Model
      */
     public function cancel($order_id)
     {
-        if ($this->update()->set(['status' => 3])->where(['id' => $order_id])->execute()) {
+        if ($this->update('orders')->set(['status' => 3])->where(['id' => $order_id])->execute()) {
             return true;
         }
 
@@ -340,7 +340,7 @@ class Orders extends \Core\Model
      */
     public function deleteOrder($order_id)
     {
-        if ($this->update()->set(['is_delete' => 0])->where(['id' => $order_id])->execute()) {
+        if ($this->update('orders')->set(['is_delete' => 0])->where(['id' => $order_id])->execute()) {
             return true;
         }
 
